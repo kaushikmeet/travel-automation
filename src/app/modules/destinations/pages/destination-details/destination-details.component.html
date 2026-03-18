@@ -1,0 +1,55 @@
+<div class="max-w-4xl mx-auto p-6">
+
+<img
+[src]="destination?.images?.[0]"
+class="w-full h-80 object-cover rounded">
+
+<h1 class="text-3xl font-bold mt-4">
+{{destination?.name}}
+</h1>
+
+<p class="text-gray-500">
+{{destination?.city}}, {{destination?.country}}
+</p>
+
+<p class="mt-4">
+{{destination?.description}}
+</p>
+
+<h2 class="text-xl font-semibold mt-6">
+Popular Attractions
+</h2>
+
+<ul class="list-disc ml-6">
+<li *ngFor="let a of destination?.popularAttractions">
+{{a}}
+</li>
+</ul>
+
+<h2 class="text-xl font-semibold mt-6">
+Places
+</h2>
+
+<div class="grid md:grid-cols-2 gap-4">
+
+<div
+*ngFor="let p of destination?.places"
+class="border rounded p-3">
+
+<img
+[src]="p.image"
+class="h-40 w-full object-cover rounded">
+
+<h3 class="font-semibold mt-2">
+{{p.name}}
+</h3>
+
+<p class="text-sm text-gray-600">
+{{p.description}}
+</p>
+
+</div>
+
+</div>
+
+</div>

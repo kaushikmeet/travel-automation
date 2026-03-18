@@ -1,0 +1,49 @@
+<div class="max-w-4xl mx-auto p-6">
+
+<h1 class="text-3xl font-bold mb-4">
+{{package.title}}
+</h1>
+
+<img
+[src]="package.images[0]"
+class="w-full h-80 object-cover rounded mb-4">
+
+<p class="text-gray-700 mb-4">
+{{package.description}}
+</p>
+
+<div class="grid grid-cols-2 gap-4">
+
+<div class="bg-gray-100 p-4 rounded">
+Destination: {{package.destination}}
+</div>
+
+<div class="bg-gray-100 p-4 rounded">
+Price: ₹{{package.price}}
+</div>
+
+<div class="bg-gray-100 p-4 rounded">
+Duration: {{package.days}} Days / {{package.nights}} Nights
+</div>
+
+<div class="bg-gray-100 p-4 rounded">
+Max Travelers: {{package.maxTravelers}}
+</div>
+
+</div>
+
+<h2 class="text-xl font-bold mt-6">Itinerary</h2>
+
+<div
+*ngFor="let item of package.itinerary"
+class="border p-4 rounded mt-2">
+
+<h3 class="font-semibold">
+Day {{item.day}} - {{item.title}}
+</h3>
+
+<p>{{item.description}}</p>
+
+</div>
+
+</div>

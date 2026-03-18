@@ -1,0 +1,103 @@
+<nav class="bg-blue-600 text-white">
+
+  <div class="max-w-7xl mx-auto px-4">
+
+    <div class="flex items-center justify-between h-16">
+
+      <!-- Logo -->
+      <div class="text-xl font-bold">
+        Travel <span class="text-yellow-300">AI</span>
+      </div>
+
+      <!-- BEFORE LOGIN (Public Menu) -->
+      <div
+        *ngIf="!auth.isLoggedIn()"
+        class="hidden md:flex space-x-6">
+
+        <a routerLink="/packages" class="hover:text-yellow-300">
+          Packages
+        </a>
+
+        <a routerLink="/destinations" class="hover:text-yellow-300">
+          Destinations
+        </a>
+
+        <a routerLink="/bookings" class="hover:text-yellow-300">
+          Bookings
+        </a>
+
+      </div>
+
+      <!-- AFTER LOGIN -->
+      <div
+        *ngIf="auth.isLoggedIn()"
+        class="hidden md:flex items-center space-x-4">
+
+        <!-- Username -->
+        <span class="font-medium">
+          {{ user?.name || 'Admin' }}
+        </span>
+
+        <!-- Logout -->
+        <button
+          (click)="logout()"
+          class="bg-red-500 px-4 py-1 rounded hover:bg-red-600">
+          Logout
+        </button>
+
+      </div>
+
+      <!-- Login Button (Before Login) -->
+      <div *ngIf="!auth.isLoggedIn()" class="hidden md:block">
+        <button
+          routerLink="/auth/login"
+          class="bg-yellow-400 text-black px-4 py-1 rounded hover:bg-yellow-500">
+          Login
+        </button>
+      </div>
+
+      <!-- Mobile Toggle -->
+      <button
+        (click)="toggleMenu()"
+        class="md:hidden text-2xl">
+        ☰
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- Mobile Menu -->
+  <div *ngIf="menuOpen" class="md:hidden bg-blue-700 px-4 pb-4 space-y-2">
+
+    <!-- Before Login -->
+    <div *ngIf="!auth.isLoggedIn()">
+
+      <a routerLink="/packages" class="block">Packages</a>
+      <a routerLink="/destinations" class="block">Destinations</a>
+      <a routerLink="/bookings" class="block">Bookings</a>
+
+      <button
+        routerLink="/auth/login"
+        class="bg-yellow-400 text-black px-3 py-1 rounded w-full mt-2">
+        Login
+      </button>
+
+    </div>
+
+    <!-- After Login -->
+    <div *ngIf="auth.isLoggedIn()">
+
+      <p class="mb-2">{{ user?.name || 'Admin' }}</p>
+
+      <button
+        (click)="logout()"
+        class="bg-red-500 px-3 py-1 rounded w-full">
+        Logout
+      </button>
+
+    </div>
+
+  </div>
+
+</nav>

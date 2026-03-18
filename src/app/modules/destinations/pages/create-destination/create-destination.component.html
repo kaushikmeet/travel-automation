@@ -1,0 +1,116 @@
+<div class="max-w-2xl mx-auto p-6">
+
+<h1 class="text-2xl font-bold mb-4">
+Create Destination
+</h1>
+
+<form [formGroup]="destionationform" *ngIf="destionationform" (ngSubmit)="submit()"
+class="space-y-4">
+
+<input formControlName="name"
+placeholder="Destination Name"
+class="w-full border p-2 rounded">
+
+<input formControlName="country"
+placeholder="Country"
+class="w-full border p-2 rounded">
+
+<input formControlName="city"
+placeholder="City"
+class="w-full border p-2 rounded">
+
+<textarea formControlName="description"
+placeholder="Description"
+class="w-full border p-2 rounded">
+</textarea>
+
+<input formControlName="bestSeason"
+placeholder="Best Season"
+class="w-full border p-2 rounded">
+
+<input type="number"
+formControlName="averagePrice"
+placeholder="Average Price"
+class="w-full border p-2 rounded">
+
+<!-- Images -->
+<div>
+<h3 class="font-semibold mb-2">Images</h3>
+<div formArrayName="images">
+<div *ngFor="let img of images.controls;let i=index">
+<input
+[formControlName]="i"
+class="w-full border p-2 rounded mb-2"
+placeholder="Image URL">
+</div>
+</div>
+<button type="button"
+(click)="addImage()"
+class="bg-gray-200 px-3 py-1 rounded">
+Add Image
+</button>
+</div>
+
+<!-- Attractions -->
+<div>
+<h3 class="font-semibold">Popular Attractions</h3>
+<div formArrayName="popularAttractions">
+<div *ngFor="let a of attractions.controls;let i=index">
+<input
+[formControlName]="i"
+class="w-full border p-2 rounded mb-2"
+placeholder="Attraction">
+</div>
+</div>
+
+<button type="button"
+(click)="addAttraction()"
+class="bg-gray-200 px-3 py-1 rounded">
+Add Attraction
+</button>
+</div>
+
+<!-- Places -->
+<div>
+
+<h3 class="font-semibold">Places</h3>
+<div formArrayName="places">
+<div
+*ngFor="let p of places.controls;let i=index"
+[formGroupName]="i"
+class="border p-3 rounded mb-3">
+
+<input
+formControlName="name"
+placeholder="Place Name"
+class="w-full border p-2 rounded mb-2">
+
+<input
+formControlName="image"
+placeholder="Place Image"
+class="w-full border p-2 rounded mb-2">
+
+<textarea
+formControlName="description"
+placeholder="Place Description"
+class="w-full border p-2 rounded">
+</textarea>
+</div>
+</div>
+
+<button type="button"
+(click)="addPlace()"
+class="bg-gray-200 px-3 py-1 rounded">
+Add Place
+</button>
+
+</div>
+
+<button
+class="bg-blue-600 text-white px-4 py-2 rounded">
+Save
+</button>
+
+</form>
+
+</div>

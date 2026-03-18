@@ -1,0 +1,90 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+
+  <form
+    *ngIf="form"
+    [formGroup]="form"
+    (ngSubmit)="update()"
+    class="w-full max-w-2xl bg-white shadow-lg rounded-2xl p-8 space-y-6">
+
+    <!-- Title -->
+    <h2 class="text-2xl font-bold text-gray-800 text-center">
+      Update Destination
+    </h2>
+
+    <!-- Name -->
+    <div>
+      <label class="block text-sm font-medium text-gray-600">Name</label>
+      <input
+        type="text"
+        formControlName="name"
+        class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"/>
+    </div>
+
+    <!-- Country + City -->
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm text-gray-600">Country</label>
+        <input
+          type="text"
+          formControlName="country"
+          class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"/>
+      </div>
+
+      <div>
+        <label class="block text-sm text-gray-600">City</label>
+        <input
+          type="text"
+          formControlName="city"
+          class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"/>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div>
+      <label class="block text-sm text-gray-600">Description</label>
+      <textarea
+        formControlName="description"
+        rows="3"
+        class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+    </div>
+
+    <!-- Season + Price -->
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm text-gray-600">Best Season</label>
+        <input
+          type="text"
+          formControlName="bestSeason"
+          class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"/>
+      </div>
+
+      <div>
+        <label class="block text-sm text-gray-600">Average Price</label>
+        <input
+          type="text"
+          formControlName="averagePrice"
+          class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"/>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex justify-between items-center pt-4">
+
+      <button
+        type="button"
+        (click)="goDestionationList()"
+        class="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500">
+        Cancel
+      </button>
+
+      <button
+        type="submit"
+        class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        Update
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

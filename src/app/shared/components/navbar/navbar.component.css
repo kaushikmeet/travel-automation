@@ -1,0 +1,63 @@
+.navbar{
+display:flex;
+align-items:center;
+justify-content: space-between;
+padding: 10px;
+box-shadow: 0px 5px 7px -5px rgba(0,0,0,0.1);
+}
+
+.logo{
+font-size:22px;
+font-weight:600;
+}
+
+.logo-design{
+color:#ffcc00;
+}
+
+.spacer{
+flex:1;
+}
+
+.menu a{
+margin-right:10px;
+}
+
+.auth{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.admin{
+margin-right:10px;
+font-weight:500;
+}
+
+/* Mobile */
+
+.mobile-menu{
+display:none;
+}
+
+.desktop-menu{
+display:flex;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+.desktop-menu{
+display:none;
+}
+
+.mobile-menu{
+display:block;
+}
+
+.auth span{
+display:none;
+}
+
+}

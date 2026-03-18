@@ -1,0 +1,29 @@
+<div class="search-box">
+
+<input type="text"
+       [(ngModel)]="keyword"
+       placeholder="Search destination">
+
+<button (click)="search()">
+Search
+</button>
+
+</div>
+
+<div class="packages">
+
+<div class="package-card" *ngFor="let p of packages">
+
+<h3>{{p.title}}</h3>
+
+<p>{{p.destination}}</p>
+
+<p>₹ {{p.price}}</p>
+
+<button routerLink="/packages/{{p._id}}">
+View
+</button>
+
+</div>
+
+</div>

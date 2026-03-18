@@ -1,0 +1,39 @@
+<div class="max-w-lg mx-auto mt-10 bg-white shadow-lg rounded-lg p-6">
+
+<h2 class="text-2xl font-bold mb-6">
+Update User
+</h2>
+
+<form [formGroup]="editForm" (ngSubmit)="update()" class="space-y-4">
+
+<input
+type="text"
+formControlName="name"
+placeholder="Name"
+class="w-full border p-2 rounded-lg">
+
+<input
+type="email"
+formControlName="email"
+placeholder="Email"
+class="w-full border p-2 rounded-lg">
+
+<select
+formControlName="role"
+class="w-full border p-2 rounded-lg">
+
+<option value="user">User</option>
+<option value="admin">Admin</option>
+
+</select>
+
+<button
+class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
+
+Update User
+
+</button>
+
+</form>
+
+</div>

@@ -1,0 +1,76 @@
+<div class="w-64 h-screen bg-gray-900 text-white flex flex-col">
+
+  <!-- Logo -->
+  <div class="p-4 text-xl font-bold border-b border-gray-700">
+    Travel <span class="text-yellow-400">AI</span>
+  </div>
+
+  <!-- Menu -->
+  <nav class="flex-1 p-3 space-y-2">
+
+    <a
+      routerLink="/dashboard"
+      class="flex items-center gap-3 p-2 rounded hover:bg-gray-800 transition">
+
+      <span>📊</span>
+      <span>Dashboard</span>
+
+    </a>
+
+    <a
+      routerLink="/users"
+      class="flex items-center gap-3 p-2 rounded hover:bg-gray-800 transition">
+
+      <span>👥</span>
+      <span>Users</span>
+
+    </a>
+
+    <a
+      (click)="goPackages()"
+      class="flex items-center gap-3 p-2 rounded hover:bg-gray-800 cursor-pointer">
+
+      <span>🎒</span>
+      <span>Packages</span>
+
+    </a>
+
+    <a
+      (click)="goDestination()"
+      class="flex items-center gap-3 p-2 rounded hover:bg-gray-800">
+
+      <span>📍</span>
+      <span>Destinations</span>
+
+    </a>
+
+    <a
+      (click)="goBooking()"
+      class="flex items-center gap-3 p-2 rounded hover:bg-gray-800">
+
+      <span>📖</span>
+      <span>Bookings</span>
+
+    </a>
+
+    <a
+      (click)="goReview()"
+      class="flex items-center gap-3 p-2 rounded hover:bg-gray-800">
+
+      <span>⭐</span>
+      <span>Reviews</span>
+
+    </a>
+
+    <a
+      (click)="goPayment()"
+      class="flex items-center gap-3 p-2 rounded hover:bg-gray-800">
+
+      <span>💳</span>
+      <span>Payments</span>
+
+    </a>
+
+  </nav>
+
+</div>
