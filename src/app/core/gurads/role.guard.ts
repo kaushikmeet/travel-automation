@@ -1,19 +1,22 @@
-import { inject } from '@angular/core'
-import { ActivatedRouteSnapshot, CanActivateFn, Router } from '@angular/router'
-import { AuthService } from '../../modules/auth/auth.service'
+// core/guards/role.guard.ts
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../../modules/auth/auth.service';
+import { ToastService } from '../services/toast.service';
 
+export const roleGuard: CanActivateFn = (route, state) => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+  const toast = inject(ToastService);
 
-export const roleGuard: CanActivateFn = (route:ActivatedRouteSnapshot)=>{
+  const user = auth.user(); // Your Signal or Getter
+  const expectedRoles = route.data['roles'] as string[];
 
-  const auth = inject(AuthService)
-  const router = inject(Router)
-
-  const roles = route.data['roles']
-
-  if(!roles.includes(auth.user()?.role)){
-    router.navigate(['/dashboard'])
-    return false
+  if (user && expectedRoles.includes(user.role)) {
+    return true;
   }
 
-  return true
-}
+  toast.error("Access Denied: You don't have the required permissions.");
+  router.navigate(['/dashboard']); 
+  return false;
+};

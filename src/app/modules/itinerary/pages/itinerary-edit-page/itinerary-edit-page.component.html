@@ -1,0 +1,146 @@
+<div class="p-6 max-w-5xl mx-auto" *ngIf="itinerary">
+
+  <!-- Header -->
+  <h1 class="text-2xl font-semibold text-gray-800 mb-6">
+    Edit Itinerary
+  </h1>
+
+  <!-- Basic Info -->
+  <div class="bg-white shadow rounded-xl p-5 mb-6 border space-y-4">
+
+    <input
+      [(ngModel)]="itinerary.title"
+      (ngModelChange)="autoSave()"
+      placeholder="Title"
+      class="w-full px-4 py-2 border rounded-lg"
+    />
+
+    <textarea
+    [(ngModel)]="itinerary.description"
+    placeholder="Write day details..."
+    class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 min-h-[120px]"
+    ></textarea>
+
+  </div>
+
+  <!-- Days Drag Container -->
+  <div cdkDropList (cdkDropListDropped)="drop($event)" class="space-y-6">
+
+    <!-- Day Card -->
+    <div
+      *ngFor="let day of itinerary.days; let i = index"
+      cdkDrag
+      class="bg-white p-5 rounded-xl shadow border"
+    >
+
+      <!-- Header -->
+      <div class="flex justify-between items-center mb-3">
+
+        <div class="flex items-center gap-3">
+          <span class="cursor-move text-gray-400">☰</span>
+          <h2 class="text-lg font-semibold">Day {{ day.day }}</h2>
+        </div>
+
+        <div class="flex gap-3">
+          <button (click)="toggleDay(i)" class="text-blue-500 text-sm">
+            {{ collapsed[i] ? 'Expand' : 'Collapse' }}
+          </button>
+
+          <button (click)="removeDay(i)" class="text-red-500 text-sm">
+            Remove
+          </button>
+        </div>
+      </div>
+
+      <!-- Collapsible Content -->
+      <div *ngIf="!collapsed[i]">
+
+        <!-- Title -->
+        <input
+          [(ngModel)]="day.title"
+          (ngModelChange)="autoSave()"
+          placeholder="Day title"
+          class="w-full mb-3 px-3 py-2 border rounded"
+        />
+
+        <!-- Rich Description -->
+        <textarea
+            [(ngModel)]="day.description"
+            placeholder="Write day details..."
+            class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 min-h-[120px]"
+            ></textarea>
+
+        <!-- Meals -->
+        <div class="flex gap-4 mb-3">
+
+          <label class="flex items-center gap-2 text-sm">
+            <input type="checkbox" [(ngModel)]="day.meals.breakfast" (change)="autoSave()" />
+            Breakfast
+          </label>
+
+          <label class="flex items-center gap-2 text-sm">
+            <input type="checkbox" [(ngModel)]="day.meals.lunch" (change)="autoSave()" />
+            Lunch
+          </label>
+
+          <label class="flex items-center gap-2 text-sm">
+            <input type="checkbox" [(ngModel)]="day.meals.dinner" (change)="autoSave()" />
+            Dinner
+          </label>
+
+        </div>
+
+        <!-- Stay -->
+        <input
+          [(ngModel)]="day.stay"
+          (ngModelChange)="autoSave()"
+          placeholder="Hotel / Stay"
+          class="w-full mb-3 px-3 py-2 border rounded"
+        />
+
+        <!-- Activities -->
+        <div class="space-y-2">
+
+          <div
+            *ngFor="let act of day.activities; let j = index"
+            class="flex gap-2"
+          >
+            <input
+              [(ngModel)]="day.activities[j]"
+              (ngModelChange)="autoSave()"
+              placeholder="Activity"
+              class="flex-1 px-3 py-2 border rounded"
+            />
+
+            <button
+              (click)="removeActivity(day, j)"
+              class="text-red-500"
+            >
+              ✕
+            </button>
+          </div>
+
+          <button
+            (click)="addActivity(day)"
+            class="text-sm text-blue-600 mt-2"
+          >
+            + Add Activity
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Add Day -->
+    <button
+      (click)="addDay()"
+      class="w-full py-3 border-2 border-dashed rounded-lg text-gray-600 hover:bg-gray-100"
+    >
+      + Add New Day
+    </button>
+
+  </div>
+
+</div>

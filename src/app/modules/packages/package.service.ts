@@ -33,4 +33,12 @@ export class PackageService {
   delete(id:string){
     return this.http.delete(`${this.api}/${id}`)
   }
+
+  getRecommended(limit: number = 3) {
+    return this.http.get<any[]>(`${this.api}/recommended?limit=${limit}`);
+  }
+
+  getPackage(idOrSlug: string) {
+    return this.http.get<any>(`${this.api}/${idOrSlug}`);
+  }
 }

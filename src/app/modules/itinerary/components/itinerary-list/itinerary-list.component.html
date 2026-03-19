@@ -1,0 +1,33 @@
+<div class="p-6">
+
+  <div class="flex justify-between mb-4">
+    <h1 class="text-xl font-bold">Itineraries</h1>
+
+    <button routerLink="/itinerary/create" class="btn bg-blue-600 text-white">
+      + Create
+    </button>
+  </div>
+
+  <div class="bg-white shadow rounded">
+
+    <div *ngFor="let item of itineraries"
+         class="flex justify-between p-4 border-b">
+
+      <div>
+        <h2 class="font-semibold">{{ item.title }}</h2>
+        <p class="text-sm text-gray-500">
+          {{ item.duration }} Days | ₹{{ item.price }}
+        </p>
+      </div>
+
+      <div class="flex gap-2">
+        <button [routerLink]="['/itinerary', item._id]">👁</button>
+        <button [routerLink]="['/itinerary/edit', item._id]">✏️</button>
+        <button (click)="delete(item._id)">🗑</button>
+        <button (click)="clone(item._id)">📄 Clone</button>
+      </div>
+
+    </div>
+
+  </div>
+</div>

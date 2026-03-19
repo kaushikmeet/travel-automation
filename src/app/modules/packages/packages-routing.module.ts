@@ -9,7 +9,6 @@ import { roleGuard } from '../../core/gurads/role.guard';
 import { UpdatePackageComponent } from './pages/update-package/update-package.component';
 
 const routes: Routes = [
-  {path:"", component:PackageSearchComponent},
   {path:
     "package-list",
     canActivate: [AuthGuard, roleGuard],

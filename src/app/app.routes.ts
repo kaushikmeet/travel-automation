@@ -5,91 +5,77 @@ import { AuthGuard } from './core/gurads/auth.guard';
 import { LayoutComponent } from './shared/components/layout/layout.component';
 
 export const routes: Routes = [
- {
-  path:'',
-  component: LayoutComponent,
-  children:[
-    {
-      path: '',
-      redirectTo: 'packages',
-      pathMatch: 'full'
-    },
+  {
+    path: '',
+    component: LayoutComponent,
+    children: [
+      {
+        path:"", 
+        loadChildren:()=>import('./modules/website/website.module').then(m=>m.WebsiteModule)
+      },
 
-    /* AUTH MODULE */
-    {
-      path: 'auth',
-      loadChildren: () =>
-        import('./modules/auth/auth.module').then(m => m.AuthModule)
-    },
+      /* AUTH */
+      {
+        path: 'auth',
+        loadChildren: () => import('./modules/auth/auth.module').then(m => m.AuthModule)
+      },
 
-    /* DASHBOARD */
+      /* DASHBOARD */
+      {
+        path: 'dashboard',
+        canActivate: [AuthGuard, roleGuard],
+        data: { roles: ['admin', 'agent', 'user'] },
+        loadChildren: () => import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule)
+      },
 
-    {
-      path: 'dashboard',
-      canActivate: [AuthGuard],
-      loadChildren: () =>
-        import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule)
-    },
+      /* USERS - Strictly Admin */
+      {
+        path: 'users',
+        canActivate: [AuthGuard, roleGuard],
+        data: { roles: ['admin'] },
+        loadChildren: () => import('./modules/users/users.module').then(m => m.UsersModule)
+      },
 
-    /* USERS (ADMIN ONLY) */
+      /* PAYMENTS */
+      {
+        path: 'payments',
+        canActivate: [AuthGuard, roleGuard],
+        data: { roles: ['admin', 'agent'] },
+        loadChildren: () => import('./modules/payments/payments.module').then(m => m.PaymentsModule)
+      },
 
-    {
-      path: 'users',
-      canActivate: [AuthGuard, roleGuard],
-      data: { roles: ['admin'] },
-      loadChildren: () =>
-        import('./modules/users/users.module').then(m => m.UsersModule)
-    },
+      /* BOOKINGS */
+      {
+        path: 'bookings',
+        canActivate: [AuthGuard, roleGuard],
+        data: { roles: ['admin', 'agent', 'user'] },
+        loadChildren: () => import('./modules/bookings/bookings.module').then(m => m.BookingsModule)
+      },
 
-    /* DESTINATIONS */
+	  {
+		  path: 'destinations',
+		  loadChildren: () =>
+			import('./modules/destinations/destinations.module').then(m => m.DestinationsModule)
+		},
 
-    {
-      path: 'destinations',
-      loadChildren: () =>
-        import('./modules/destinations/destinations.module').then(m => m.DestinationsModule)
-    },
+		/* PACKAGES */
 
-    /* PACKAGES */
+		{
+		  path: 'packages',
+		  loadChildren: () =>
+			import('./modules/packages/packages.module').then(m => m.PackagesModule)
+		},
 
-    {
-      path: 'packages',
-      loadChildren: () =>
-        import('./modules/packages/packages.module').then(m => m.PackagesModule)
-    },
-
-    /* BOOKINGS */
-
-    {
-      path: 'bookings',
-      canActivate: [AuthGuard],
-      loadChildren: () =>
-        import('./modules/bookings/bookings.module').then(m => m.BookingsModule)
-    },
-
-    /* PAYMENTS */
-
-    {
-      path: 'payments',
-      canActivate: [AuthGuard],
-      loadChildren: () =>
-        import('./modules/payments/payments.module').then(m => m.PaymentsModule)
-    },
-
-    /* REVIEWS */
-
-    {
-      path: 'reviews',
-      loadChildren: () =>
-        import('./modules/reviews/reviews.module').then(m => m.ReviewsModule)
-    },
-
-    /* FALLBACK */
-
-    {
-      path: '**',
-      redirectTo: 'packages'
-    }
-
-  ]
- }
+		{
+		  path:'itinerary',
+		  loadChildren: ()=>
+			import('./modules/itinerary/itinerary.module').then(m=> m.ItineraryModule)
+	  },
+	  {
+		  path: 'reviews',
+		  loadChildren: () =>
+			import('./modules/reviews/reviews.module').then(m => m.ReviewsModule)
+	  },
+    ]
+  }
 ];

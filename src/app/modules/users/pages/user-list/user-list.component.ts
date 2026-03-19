@@ -19,7 +19,6 @@ export class UserListComponent {
 
   constructor(
     private userService: UserService,
-  
   ){}
 
   ngOnInit(){
@@ -32,27 +31,11 @@ export class UserListComponent {
     })
   }
 
-  // applyFilter(event:Event){
-  //   const value = (event.target as HTMLInputElement).value
-  //   this.dataSource.filter = value.trim().toLowerCase();
-  // }
-
    delete(id:string){
-    // const dialogRef = this.dialog.open(ConfirmDialogComponent,{
-    //   data:{message: 'Delete this user?'}
-    // });
     if(confirm("Are you sure delete User")){
       this.userService.deleteUser(id).subscribe(()=>{
         this.loadUsers()
       });
     }
-
-    // dialogRef.afterClosed().subscribe(res=>{
-    //   if(confirm("Delete user?")){
-    //     this.userService.deleteUser(id).subscribe(()=>{
-    //     this.loadUsers()
-    //    })
-    //   }
-    // })
   }
 }

@@ -1,0 +1,96 @@
+<div class="p-6 max-w-3xl mx-auto">
+
+  <!-- Header -->
+  <h1 class="text-2xl font-semibold text-gray-800 mb-6">
+    Create Itinerary
+  </h1>
+
+  <!-- Card -->
+  <div class="bg-white shadow-lg rounded-2xl p-6 space-y-5 border">
+
+    <!-- Title -->
+    <div>
+      <label class="block text-sm font-medium text-gray-600 mb-1">
+        Title
+      </label>
+      <input
+        [(ngModel)]="form.title"
+        placeholder="Enter itinerary title"
+        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
+      />
+    </div>
+
+    <!-- Description -->
+    <div>
+      <label class="block text-sm font-medium text-gray-600 mb-1">
+        Description
+      </label>
+      <textarea
+        [(ngModel)]="form.description"
+        rows="3"
+        placeholder="Enter description"
+        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
+      ></textarea>
+    </div>
+
+    <!-- Package ID -->
+    <div>
+      <label class="block text-sm font-medium text-gray-600 mb-1">
+        Select Package
+      </label>
+      <select
+         [(ngModel)]="form.packageId"
+         class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
+        >
+            <option value="">-- Select Package --</option>
+
+            <option *ngFor="let p of packages" [value]="p._id">
+            {{ p.title }} - ₹{{ p.price }}
+            </option>
+        </select>
+    </div>
+
+    <!-- Grid Fields -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <!-- Duration -->
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">
+          Duration (Days)
+        </label>
+        <input
+          [(ngModel)]="form.duration"
+          type="number"
+          (change)="generateDays()"
+          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
+        />
+      </div>
+
+      <!-- Price -->
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">
+          Price
+        </label>
+        <input
+          [(ngModel)]="form.price"
+          type="number"
+          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
+        />
+      </div>
+
+    </div>
+
+    <!-- Button -->
+    <div class="pt-4">
+      <button
+        (click)="create()"
+        [disabled]="loading"
+        class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 rounded-lg transition duration-200 disabled:opacity-50"
+      >
+        {{ loading ? 'Creating...' : 'Create Itinerary' }}
+      </button>
+    </div>
+
+  </div>
+
+</div>

@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class DestinationService {
 
   private api = environment.baseURL + '/destinations';
+  destinations = signal<any[]>([]);
   
 
   constructor(private http: HttpClient) { }
@@ -37,5 +39,9 @@ export class DestinationService {
 
   delete(id:string){
     return this.http.delete(`${this.api}/${id}`);
+  }
+
+  getPopular(limit: number = 6): Observable<any[]> {
+    return this.http.get<any[]>(`${this.api}/popular?limit=${limit}`);
   }
 }

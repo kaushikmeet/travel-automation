@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { environment } from '../../environments/environment'
 
 @Injectable({
@@ -7,12 +7,21 @@ import { environment } from '../../environments/environment'
 })
 export class UserService {
 
-  private api = environment.baseURL + '/users'
+  private api = environment.baseURL + '/users';
+
+  private getHeaders() {
+  const token = localStorage.getItem('token');
+  return {
+    headers: new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    })
+  };
+}
 
   constructor(private http: HttpClient) {}
 
   getUsers(){
-    return this.http.get<any[]>(this.api)
+    return this.http.get<any[]>(this.api, this.getHeaders());
   }
 
   getUser(id:string){
@@ -28,7 +37,7 @@ export class UserService {
   }
 
   deleteUser(id:string){
-    return this.http.delete(`${this.api}/${id}`)
+    return this.http.delete(`${this.api}/${id}`, this.getHeaders())
   }
 
 }
