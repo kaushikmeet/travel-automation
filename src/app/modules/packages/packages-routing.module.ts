@@ -30,7 +30,7 @@ const routes: Routes = [
     component: UpdatePackageComponent
   },
 
-  {path:"package-details/:id", component:PackageDetailsComponent}
+  {path:"package-details/:slug", component:PackageDetailsComponent}
 ];
 
 @NgModule({

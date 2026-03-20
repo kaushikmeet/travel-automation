@@ -1,55 +1,96 @@
-<div class="max-w-4xl mx-auto p-6">
+<div class="w-full mx-auto p-4 md:p-4 bg-white selection:bg-indigo-100">
+  
+  <div class="relative group overflow-hidden rounded-3xl shadow-2xl">
+    <img [src]="destination?.images?.[0]" 
+         class="w-full h-[450px] object-cover transition-transform duration-700 group-hover:scale-105"
+         alt="Destination Header">
+    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+    
+    <div class="absolute bottom-0 left-0 p-8 text-white">
+      <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs uppercase tracking-widest mb-3 inline-block border border-white/30">
+        Featured Destination
+      </span>
+      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight">
+        {{destination?.name}}
+      </h1>
+      <p class="flex items-center mt-2 text-lg text-gray-200">
+        <svg class="w-5 h-5 mr-1 text-indigo-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>
+        {{destination?.city}}, {{destination?.country}}
+      </p>
+    </div>
+  </div>
 
-<img
-[src]="destination?.images?.[0]"
-class="w-full h-80 object-cover rounded">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 mt-12">
+    
+    <div class="lg:col-span-2 space-y-10">
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 mb-4 border-l-4 border-indigo-500 pl-4">About the Experience</h2>
+        <p class="text-gray-600 leading-relaxed text-lg italic">
+          "{{destination?.description}}"
+        </p>
+      </section>
 
-<h1 class="text-3xl font-bold mt-4">
-{{destination?.name}}
-</h1>
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Must-See Attractions</h2>
+        <div class="flex flex-wrap gap-3">
+          <span *ngFor="let a of destination?.popularAttractions"
+                class="px-5 py-2 bg-indigo-50 text-indigo-700 rounded-2xl font-medium border border-indigo-100 hover:bg-indigo-100 transition-colors cursor-default">
+            {{a}}
+          </span>
+        </div>
+      </section>
+    </div>
 
-<p class="text-gray-500">
-{{destination?.city}}, {{destination?.country}}
-</p>
+    <div class="lg:col-span-1">
+      <div class="bg-gray-50 rounded-3xl p-6 border border-gray-100 sticky top-8">
+        <h3 class="text-lg font-bold mb-4">Trip Highlights</h3>
+        <ul class="space-y-4 text-gray-600">
+          <li class="flex items-center gap-3">
+            <div class="p-2 bg-white rounded-lg shadow-sm">📸</div>
+            <span>World-class photography spots</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <div class="p-2 bg-white rounded-lg shadow-sm">🏛️</div>
+            <span>Rich historical heritage</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
-<p class="mt-4">
-{{destination?.description}}
-</p>
+  <div class="mt-20">
+    <div class="flex items-end justify-between mb-8">
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900">Explore Nearby</h2>
+        <p class="text-gray-500 mt-1">Handpicked spots for your itinerary</p>
+      </div>
+    </div>
 
-<h2 class="text-xl font-semibold mt-6">
-Popular Attractions
-</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div *ngFor="let p of destination?.places"
+           class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
+        
+        <div class="relative overflow-hidden">
+          <img [src]="p.image" class="h-56 w-full object-cover group-hover:scale-110 transition-transform duration-500">
+          <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-indigo-600">
+            Top Choice
+          </div>
+        </div>
 
-<ul class="list-disc ml-6">
-<li *ngFor="let a of destination?.popularAttractions">
-{{a}}
-</li>
-</ul>
-
-<h2 class="text-xl font-semibold mt-6">
-Places
-</h2>
-
-<div class="grid md:grid-cols-2 gap-4">
-
-<div
-*ngFor="let p of destination?.places"
-class="border rounded p-3">
-
-<img
-[src]="p.image"
-class="h-40 w-full object-cover rounded">
-
-<h3 class="font-semibold mt-2">
-{{p.name}}
-</h3>
-
-<p class="text-sm text-gray-600">
-{{p.description}}
-</p>
-
-</div>
-
-</div>
+        <div class="p-6">
+          <h3 class="text-xl font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">
+            {{p.name}}
+          </h3>
+          <p class="text-gray-600 mt-2 text-sm leading-relaxed line-clamp-3">
+            {{p.description}}
+          </p>
+          <button class="mt-4 text-indigo-600 font-semibold text-sm flex items-center group/btn">
+            View details 
+            <span class="ml-1 group-hover/btn:translate-x-1 transition-transform">→</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>

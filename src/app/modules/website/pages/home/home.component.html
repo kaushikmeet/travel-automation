@@ -47,7 +47,7 @@
       <div
         *ngFor="let d of destinations"
         class="group cursor-pointer text-center"
-        [routerLink]="['/destinations', d._id]"
+        [routerLink]="['/destinations/detail', d._id]"
       >
         <div
           class="relative aspect-square overflow-hidden rounded-full mb-4 border-4 border-white shadow-lg group-hover:border-indigo-500 transition-all duration-300 bg-slate-100"
@@ -86,7 +86,7 @@
   </section>
 
   <section class="py-20 bg-slate-50">
-    <div class="max-w-7xl mx-auto px-6">
+    <div class="max-w-7xl mx-auto px-8">
       <div class="mb-12">
         <h2 class="text-3xl font-black text-slate-900 tracking-normal">
           Recommended Packages
@@ -120,7 +120,7 @@
               <i class="fas fa-user-friends"></i> Up to {{ p.maxTravelers }}
             </div>
             <button
-              [routerLink]="['/packages', p._id]"
+              [routerLink]="['/packages/package-details', p.slug]"
               class="w-full py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-indigo-600 transition-colors"
             >
               Book Details

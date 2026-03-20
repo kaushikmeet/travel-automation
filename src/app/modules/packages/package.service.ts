@@ -38,7 +38,7 @@ export class PackageService {
     return this.http.get<any[]>(`${this.api}/recommended?limit=${limit}`);
   }
 
-  getPackage(idOrSlug: string) {
+  getBySlug(idOrSlug: string) {
     return this.http.get<any>(`${this.api}/${idOrSlug}`);
   }
 }
