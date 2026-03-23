@@ -44,4 +44,8 @@ export class DestinationService {
   getPopular(limit: number = 6): Observable<any[]> {
     return this.http.get<any[]>(`${this.api}/popular?limit=${limit}`);
   }
+
+  getBySlug(idOrSlug: string) {
+    return this.http.get<any>(`${this.api}/${idOrSlug}`);
+  }
 }

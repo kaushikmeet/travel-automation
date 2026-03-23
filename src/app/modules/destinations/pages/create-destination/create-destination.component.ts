@@ -16,9 +16,10 @@ import { Router } from '@angular/router';
   templateUrl: './create-destination.component.html',
   styleUrl: './create-destination.component.css'
 })
-export class CreateDestinationComponent {
 
+export class CreateDestinationComponent {
   destionationform!: FormGroup;
+  selectedFiles: File[] = []; // Store actual image files here
 
   constructor(
     private fb: FormBuilder,
@@ -27,86 +28,77 @@ export class CreateDestinationComponent {
   ) {}
 
   ngOnInit() {
-
-    // ✅ FIRST create form
     this.destionationform = this.fb.group({
       name: ["", Validators.required],
       country: ["", Validators.required],
       city: ["", Validators.required],
       description: [""],
       bestSeason: [""],
-      averagePrice: [""],
-
-      images: this.fb.array([]),
-      popularAttractions: this.fb.array([]),
+      averagePrice: [null],
+      popularAttractions: this.fb.array([this.fb.control("")]),
       places: this.fb.array([])
     });
-
-    // ✅ THEN add default fields
-    this.addImage();
-    this.addAttraction();
-    this.addPlace();
   }
 
-  // ✅ GETTERS
-  get images(): FormArray {
-    return this.destionationform.get('images') as FormArray;
+  // Getters for FormArrays
+  get attractions() { return this.destionationform.get('popularAttractions') as FormArray; }
+  get places() { return this.destionationform.get('places') as FormArray; }
+
+  // File Handling
+  onFileSelect(event: any) {
+    const files = event.target.files;
+    if (files) {
+      this.selectedFiles = Array.from(files);
+    }
   }
 
-  get attractions(): FormArray {
-    return this.destionationform.get('popularAttractions') as FormArray;
-  }
-
-  get places(): FormArray {
-    return this.destionationform.get('places') as FormArray;
-  }
-
-  // ✅ ADD METHODS
-
-  addImage() {
-    this.images.push(this.fb.control(""));
-  }
-
-  addAttraction() {
-    this.attractions.push(this.fb.control(""));
-  }
-
+  addAttraction() { this.attractions.push(this.fb.control("")); }
+  
   addPlace() {
-    this.places.push(
-      this.fb.group({
-        name: [""],
-        description: [""],
-        image: [""]
-      })
-    );
-  }
-
-  // ✅ REMOVE METHODS (optional but recommended)
-  removeImage(i: number) {
-    this.images.removeAt(i);
-  }
-
-  removeAttraction(i: number) {
-    this.attractions.removeAt(i);
-  }
-
-  removePlace(i: number) {
-    this.places.removeAt(i);
-  }
-
-  // ✅ SUBMIT
-  submit() {
-
-    let data = this.destionationform.value;
-
-    // clean empty values
-    data.images = data.images.filter((i: any) => i);
-    data.popularAttractions = data.popularAttractions.filter((i: any) => i);
-    data.places = data.places.filter((p: any) => p.name);
-
-    this.destinationSRV.create(data).subscribe(() => {
-      alert("Destination Created");
-      this.router.navigate(['/destinations/destination-list']);
+    const placeGroup = this.fb.group({
+      name: ['', Validators.required],
+      description: [''],
+      image: ['']
     });
+    this.places.push(placeGroup);
+  }
+
+  submit() {
+  if (this.destionationform.invalid) {
+    alert("Please fill in all required fields");
+    return;
+  }
+
+  const formData = new FormData();
+  const val = this.destionationform.value;
+
+  // 1. Simple fields
+  formData.append('name', val.name);
+  formData.append('country', val.country);
+  formData.append('city', val.city);
+  formData.append('description', val.description);
+  formData.append('bestSeason', val.bestSeason);
+  formData.append('averagePrice', val.averagePrice);
+
+  // 2. Arrays (Stringify for FormData)
+  formData.append('popularAttractions', JSON.stringify(val.popularAttractions.filter((a: any) => a)));
+  formData.append('places', JSON.stringify(val.places));
+
+  // 3. Files (The Gallery)
+  this.selectedFiles.forEach(file => {
+    formData.append('images', file, file.name);
+  });
+
+  this.destinationSRV.create(formData).subscribe({
+    next: () => {
+      alert("Destination Created Successfully!");
+      this.router.navigate(['/destinations/destination-list']);
+    },
+    error: (err) => console.error("Creation failed", err)
+  });
+}
+
+  removePlace(index: number) {
+    this.places.removeAt(index);
   }
 }

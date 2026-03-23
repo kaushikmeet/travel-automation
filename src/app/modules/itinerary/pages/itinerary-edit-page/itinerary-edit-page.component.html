@@ -1,146 +1,176 @@
-<div class="p-6 max-w-5xl mx-auto" *ngIf="itinerary">
+<div class="min-h-screen bg-slate-50 pb-20" *ngIf="itinerary">
+  
+  <div class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 py-4 shadow-sm">
+    <div class="max-w-5xl mx-auto flex justify-between items-center">
+      <div class="flex items-center gap-4">
+        <button routerLink="/itinerary-list" class="p-2 hover:bg-slate-100 rounded-full transition-colors">
+          <i class="fa-solid fa-arrow-left text-slate-600"></i>
+        </button>
+        <div>
+          <h1 class="text-xl font-bold text-slate-800">Edit Itinerary</h1>
+          <p class="text-xs font-medium flex items-center gap-1 transition-colors"
+                [ngClass]="isSaving ? 'text-amber-500' : 'text-indigo-600'">
+                
+                <ng-container *ngIf="isSaving; else saved">
+                  <i class="fa-solid fa-circle-notch animate-spin"></i> Saving changes...
+                </ng-container>
 
-  <!-- Header -->
-  <h1 class="text-2xl font-semibold text-gray-800 mb-6">
-    Edit Itinerary
-  </h1>
-
-  <!-- Basic Info -->
-  <div class="bg-white shadow rounded-xl p-5 mb-6 border space-y-4">
-
-    <input
-      [(ngModel)]="itinerary.title"
-      (ngModelChange)="autoSave()"
-      placeholder="Title"
-      class="w-full px-4 py-2 border rounded-lg"
-    />
-
-    <textarea
-    [(ngModel)]="itinerary.description"
-    placeholder="Write day details..."
-    class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 min-h-[120px]"
-    ></textarea>
-
-  </div>
-
-  <!-- Days Drag Container -->
-  <div cdkDropList (cdkDropListDropped)="drop($event)" class="space-y-6">
-
-    <!-- Day Card -->
-    <div
-      *ngFor="let day of itinerary.days; let i = index"
-      cdkDrag
-      class="bg-white p-5 rounded-xl shadow border"
-    >
-
-      <!-- Header -->
-      <div class="flex justify-between items-center mb-3">
-
-        <div class="flex items-center gap-3">
-          <span class="cursor-move text-gray-400">☰</span>
-          <h2 class="text-lg font-semibold">Day {{ day.day }}</h2>
-        </div>
-
-        <div class="flex gap-3">
-          <button (click)="toggleDay(i)" class="text-blue-500 text-sm">
-            {{ collapsed[i] ? 'Expand' : 'Collapse' }}
-          </button>
-
-          <button (click)="removeDay(i)" class="text-red-500 text-sm">
-            Remove
-          </button>
+                <ng-template #saved>
+                  <i class="fa-solid fa-circle-check"></i> All changes saved
+                </ng-template>
+          </p>
         </div>
       </div>
+      <div class="flex gap-3">
+        <button (click)="addDay()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-md shadow-indigo-100">
+          + Add Day
+        </button>
+      </div>
+    </div>
+  </div>
 
-      <!-- Collapsible Content -->
-      <div *ngIf="!collapsed[i]">
+  <div class="max-w-5xl mx-auto p-6 space-y-8">
 
-        <!-- Title -->
-        <input
-          [(ngModel)]="day.title"
-          (ngModelChange)="autoSave()"
-          placeholder="Day title"
-          class="w-full mb-3 px-3 py-2 border rounded"
-        />
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+      <div class="flex items-center gap-2 text-slate-400 mb-2">
+        <i class="fa-solid fa-circle-info text-xs"></i>
+        <span class="text-xs font-bold uppercase tracking-widest">Global Settings</span>
+      </div>
+      
+      <input
+        [(ngModel)]="itinerary.title"
+        (ngModelChange)="autoSave()"
+        placeholder="Main Title (e.g. 5 Days in Paris)"
+        class="text-2xl font-bold w-full px-0 border-none focus:ring-0 placeholder:text-slate-300"
+      />
 
-        <!-- Rich Description -->
-        <textarea
-            [(ngModel)]="day.description"
-            placeholder="Write day details..."
-            class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 min-h-[120px]"
-            ></textarea>
+      <textarea
+        [(ngModel)]="itinerary.description"
+        (ngModelChange)="autoSave()"
+        placeholder="Brief summary of the entire trip..."
+        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none min-h-[100px] text-slate-600 italic"
+      ></textarea>
+    </section>
 
-        <!-- Meals -->
-        <div class="flex gap-4 mb-3">
+    <div cdkDropList (cdkDropListDropped)="drop($event)" class="space-y-6">
 
-          <label class="flex items-center gap-2 text-sm">
-            <input type="checkbox" [(ngModel)]="day.meals.breakfast" (change)="autoSave()" />
-            Breakfast
-          </label>
+      <div
+        *ngFor="let day of itinerary.days; let i = index"
+        cdkDrag
+        class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden group transition-all"
+      >
+        <div class="flex justify-between items-center p-5 bg-slate-50/50 border-b border-slate-100">
+          <div class="flex items-center gap-4">
+            <div cdkDragHandle class="cursor-grab active:cursor-grabbing text-slate-300 hover:text-indigo-500 transition-colors">
+              <i class="fa-solid fa-grip-vertical text-lg"></i>
+            </div>
+            <div class="bg-indigo-600 text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold shadow-lg shadow-indigo-100">
+              {{ day.day }}
+            </div>
+            <input 
+              [(ngModel)]="day.title" 
+              (ngModelChange)="autoSave()" 
+              placeholder="Day Title..."
+              class="bg-transparent border-none focus:ring-0 font-bold text-lg text-slate-800 w-64 md:w-96"
+            />
+          </div>
 
-          <label class="flex items-center gap-2 text-sm">
-            <input type="checkbox" [(ngModel)]="day.meals.lunch" (change)="autoSave()" />
-            Lunch
-          </label>
-
-          <label class="flex items-center gap-2 text-sm">
-            <input type="checkbox" [(ngModel)]="day.meals.dinner" (change)="autoSave()" />
-            Dinner
-          </label>
-
+          <div class="flex items-center gap-2">
+            <button (click)="toggleDay(i)" class="p-2 text-slate-400 hover:text-indigo-600 transition-colors">
+              <i class="fa-solid" [ngClass]="collapsed[i] ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
+            </button>
+            <button (click)="removeDay(i)" class="p-2 text-slate-400 hover:text-red-500 transition-colors">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
         </div>
 
-        <!-- Stay -->
-        <input
-          [(ngModel)]="day.stay"
-          (ngModelChange)="autoSave()"
-          placeholder="Hotel / Stay"
-          class="w-full mb-3 px-3 py-2 border rounded"
-        />
-
-        <!-- Activities -->
-        <div class="space-y-2">
-
-          <div
-            *ngFor="let act of day.activities; let j = index"
-            class="flex gap-2"
-          >
-            <input
-              [(ngModel)]="day.activities[j]"
+        <div *ngIf="!collapsed[i]" class="p-6 space-y-6 animate-in slide-in-from-top-2 duration-300">
+          
+          <div class="space-y-2">
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-tighter ml-1">Daily Summary</label>
+            <textarea
+              [(ngModel)]="day.description"
               (ngModelChange)="autoSave()"
-              placeholder="Activity"
-              class="flex-1 px-3 py-2 border rounded"
-            />
+              placeholder="What's the plan for today?"
+              class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none min-h-[100px] text-slate-600"
+            ></textarea>
+          </div>
 
-            <button
-              (click)="removeActivity(day, j)"
-              class="text-red-500"
-            >
-              ✕
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-2">
+              <label class="text-xs font-bold text-slate-400 uppercase tracking-tighter ml-1">Accommodation</label>
+              <div class="relative">
+                <i class="fa-solid fa-hotel absolute left-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
+                <input
+                  [(ngModel)]="day.stay"
+                  (ngModelChange)="autoSave()"
+                  placeholder="Hotel / Resort Name"
+                  class="w-full pl-11 pr-4 py-2.5 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                />
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-xs font-bold text-slate-400 uppercase tracking-tighter ml-1">Meals Included</label>
+              <div class="flex gap-3 h-[46px] items-center bg-slate-50 rounded-xl px-4 border border-slate-200">
+                <label class="custom-checkbox">
+                  <input type="checkbox" [(ngModel)]="day.meals.breakfast" (change)="autoSave()" />
+                  <span class="text-sm text-slate-600 ml-1">Breakfast</span>
+                </label>
+                <div class="w-px h-4 bg-slate-300"></div>
+                <label class="custom-checkbox">
+                  <input type="checkbox" [(ngModel)]="day.meals.lunch" (change)="autoSave()" />
+                  <span class="text-sm text-slate-600 ml-1">Lunch</span>
+                </label>
+                <div class="w-px h-4 bg-slate-300"></div>
+                <label class="custom-checkbox">
+                  <input type="checkbox" [(ngModel)]="day.meals.dinner" (change)="autoSave()" />
+                  <span class="text-sm text-slate-600 ml-1">Dinner</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-tighter ml-1">Activities Schedule</label>
+            <div class="space-y-2">
+              <div *ngFor="let act of day.activities; let j = index; trackBy: trackByFn" class="flex gap-2 group/act">
+  
+              <div class="flex items-center justify-center w-8 text-indigo-300 font-bold text-xs">
+                {{j + 1}}
+              </div>
+
+              <input
+                [(ngModel)]="day.activities[j]"
+                (ngModelChange)="autoSave()"
+                placeholder="e.g. Visit Eiffel Tower at sunset"
+                class="flex-1 px-4 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+              />
+
+              <button (click)="removeActivity(day, j)" class="text-slate-300 hover:text-red-500 transition-colors px-2">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+            </div>
+            <button (click)="addActivity(day)" class="flex items-center gap-2 text-indigo-600 text-sm font-bold mt-2 hover:text-indigo-800 transition-colors ml-8">
+              <i class="fa-solid fa-plus-circle"></i> Add Activity
             </button>
           </div>
 
-          <button
-            (click)="addActivity(day)"
-            class="text-sm text-blue-600 mt-2"
-          >
-            + Add Activity
-          </button>
-
         </div>
-
       </div>
 
+      <button
+        (click)="addDay()"
+        class="w-full py-8 border-2 border-dashed border-slate-300 rounded-2xl text-slate-400 hover:text-indigo-500 hover:border-indigo-400 hover:bg-indigo-50/30 transition-all flex flex-col items-center justify-center gap-2 group"
+      >
+        <div class="bg-white p-3 rounded-full shadow-sm group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-plus text-xl"></i>
+        </div>
+        <span class="font-bold tracking-tight">Insert a new day to this itinerary</span>
+      </button>
+
     </div>
-
-    <!-- Add Day -->
-    <button
-      (click)="addDay()"
-      class="w-full py-3 border-2 border-dashed rounded-lg text-gray-600 hover:bg-gray-100"
-    >
-      + Add New Day
-    </button>
-
   </div>
-
 </div>

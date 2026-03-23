@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PackageService } from '../../package.service';
 import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-package-details',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './package-details.component.html',
   styleUrl: './package-details.component.css'
 })

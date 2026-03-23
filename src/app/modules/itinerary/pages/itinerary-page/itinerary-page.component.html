@@ -1,28 +1,72 @@
-<div class="p-6">
+<div class="min-h-screen bg-slate-50 p-8">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+    <div>
+      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Travel Itineraries</h1>
+      <p class="text-slate-500 mt-1">Manage and organize your curated travel packages.</p>
+    </div>
 
-  <div class="flex justify-between mb-4">
-    <h1 class="text-xl font-bold">Itineraries</h1>
-
-    <button routerLink="/itinerary/create" class="btn bg-blue-600 text-white px-2 py-2 w-30 cursor-pointer">
-      + Create
+    <button routerLink="/itinerary/create" 
+      class="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-indigo-200 transition-all transform active:scale-95">
+      <i class="fa-solid fa-plus text-sm"></i>
+      Create New
     </button>
   </div>
 
-  <div class="bg-white shadow rounded">
-    <div *ngFor="let item of itineraries"
-         class="flex justify-between p-4 border-b border-gray-100">
-      <div>
-        <h2 class="font-semibold">{{ item.title }}</h2>
-        <p class="text-sm text-gray-500">
-          {{ item.duration }} Days | ₹{{ item.price }}
-        </p>
+  <div class="max-w-6xl mx-auto">
+    <div *ngIf="itineraries.length === 0" class="bg-white rounded-2xl p-12 text-center border-2 border-dashed border-slate-200">
+      <div class="bg-slate-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fa-solid fa-map-location-dot text-slate-400 text-xl"></i>
       </div>
+      <h3 class="text-lg font-bold text-slate-800">No itineraries found</h3>
+      <p class="text-slate-500">Get started by creating your first travel plan.</p>
+    </div>
 
-      <div class="flex gap-2">
-        <button [routerLink]="['/itinerary', item._id]" class="cursor-pointer"><i class="fa-solid fa-eye"></i></button>
-        <button [routerLink]="['/itinerary/edit', item._id]" class="cursor-pointer"><i class="fa-solid fa-pen-to-square"></i></button>
-        <button (click)="delete(item._id)" class="cursor-pointer"><i class="fa-solid fa-trash" ></i></button>
-        <button (click)="clone(item._id)" class="cursor-pointer"><i class="fa-solid fa-copy" ></i></button>
+    <div class="grid grid-cols-1 gap-4">
+      <div *ngFor="let item of itineraries" 
+        class="group bg-white border border-slate-200 p-5 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-200 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
+        
+        <div class="flex items-center gap-4">
+          <div class="hidden sm:flex bg-indigo-50 text-indigo-600 w-12 h-12 rounded-xl items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+            <i class="fa-solid fa-route text-lg"></i>
+          </div>
+          <div>
+            <h2 class="text-lg font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">
+              {{ item.title }}
+            </h2>
+            <div class="flex items-center gap-3 mt-1">
+              <span class="flex items-center gap-1 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                <i class="fa-regular fa-calendar text-[10px]"></i> {{ item.duration }} Days
+              </span>
+              <span class="flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600">
+                ₹{{ item.price | number }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 bg-slate-50 md:bg-transparent p-2 md:p-0 rounded-lg justify-end">
+          <button [routerLink]="['/itinerary', item._id]" 
+            class="action-btn text-slate-500 hover:bg-white hover:text-indigo-600" title="View Details">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+          
+          <button [routerLink]="['/itinerary/edit', item._id]" 
+            class="action-btn text-slate-500 hover:bg-white hover:text-amber-600" title="Edit">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+          
+          <button (click)="clone(item._id)" 
+            class="action-btn text-slate-500 hover:bg-white hover:text-blue-600" title="Clone/Copy">
+            <i class="fa-solid fa-copy"></i>
+          </button>
+
+          <div class="w-px h-6 bg-slate-200 mx-1 hidden md:block"></div>
+
+          <button (click)="delete(item._id)" 
+            class="action-btn text-slate-500 hover:bg-red-50 hover:text-red-600" title="Delete">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>

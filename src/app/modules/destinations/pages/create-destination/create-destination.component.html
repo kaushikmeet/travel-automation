@@ -1,116 +1,124 @@
-<div class="max-w-2xl mx-auto p-6">
+<div class="min-h-screen bg-slate-50 py-10 px-4">
+  <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
+    
+    <div class="bg-indigo-600 p-8 text-white">
+      <h1 class="text-3xl font-extrabold tracking-tight">Create Destination</h1>
+      <p class="mt-2 text-indigo-100 italic">Add a new breathtaking location to your travel list.</p>
+    </div>
 
-<h1 class="text-2xl font-bold mb-4">
-Create Destination
-</h1>
+    <form [formGroup]="destionationform" (ngSubmit)="submit()" class="p-8 space-y-8">
+      
+      <section>
+        <h2 class="text-lg font-semibold text-gray-800 border-b pb-2 mb-4">Basic Information</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="flex flex-col">
+            <label class="text-sm font-medium text-gray-600 mb-1">Destination Name</label>
+            <input formControlName="name" placeholder="e.g. Bali" class="input-style">
+          </div>
+          <div class="flex flex-col">
+            <label class="text-sm font-medium text-gray-600 mb-1">Country</label>
+            <input formControlName="country" placeholder="e.g. Indonesia" class="input-style">
+          </div>
+          <div class="flex flex-col">
+            <label class="text-sm font-medium text-gray-600 mb-1">City</label>
+            <input formControlName="city" placeholder="e.g. Ubud" class="input-style">
+          </div>
+        </div>
+      </section>
 
-<form [formGroup]="destionationform" *ngIf="destionationform" (ngSubmit)="submit()"
-class="space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="flex flex-col">
+          <label class="text-sm font-medium text-gray-600 mb-1">Best Season</label>
+          <input formControlName="bestSeason" placeholder="e.g. April to October" class="input-style">
+        </div>
+        <div class="flex flex-col">
+          <label class="text-sm font-medium text-gray-600 mb-1">Average Price ($)</label>
+          <input type="number" formControlName="averagePrice" placeholder="500" class="input-style">
+        </div>
+      </div>
 
-<input formControlName="name"
-placeholder="Destination Name"
-class="w-full border p-2 rounded">
+      <section>
+        <h2 class="text-lg font-semibold text-gray-800 border-b pb-2 mb-4">Gallery Images</h2>
+        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl hover:border-indigo-400 transition-colors bg-gray-50 group">
+          <div class="space-y-1 text-center">
+            <svg class="mx-auto h-12 w-12 text-gray-400 group-hover:text-indigo-500 transition-colors" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+              <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <div class="flex text-sm text-gray-600">
+              <label class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
+                <span>Upload images</span>
+                <input type="file" multiple (change)="onFileSelect($event)" class="sr-only">
+              </label>
+              <p class="pl-1">or drag and drop</p>
+            </div>
+            <p class="text-xs text-gray-500">Selected: {{selectedFiles.length}} files</p>
+          </div>
+        </div>
+      </section>
 
-<input formControlName="country"
-placeholder="Country"
-class="w-full border p-2 rounded">
+      <section>
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-lg font-semibold text-gray-800">Popular Attractions</h2>
+          <button type="button" (click)="addAttraction()" class="text-indigo-600 text-sm font-bold">+ Add Attraction</button>
+        </div>
+        <div formArrayName="popularAttractions" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div *ngFor="let a of attractions.controls; let i=index" class="relative">
+            <input [formControlName]="i" placeholder="Attraction Name" class="input-style">
+          </div>
+        </div>
+      </section>
 
-<input formControlName="city"
-placeholder="City"
-class="w-full border p-2 rounded">
+      <section>
+  <div class="flex justify-between items-center mb-6 border-b pb-2">
+    <h2 class="text-lg font-semibold text-gray-800">Places to Visit</h2>
+    <button type="button" (click)="addPlace()" 
+      class="bg-indigo-50 text-indigo-600 hover:bg-indigo-100 px-4 py-2 rounded-lg text-sm font-bold transition-colors">
+      + Add New Place
+    </button>
+  </div>
 
-<textarea formControlName="description"
-placeholder="Description"
-class="w-full border p-2 rounded">
-</textarea>
+    <div formArrayName="places" class="space-y-6">
+        <div *ngFor="let p of places.controls; let i=index" [formGroupName]="i" 
+        class="relative bg-gray-50 p-6 rounded-2xl border border-gray-200 shadow-sm animate-in fade-in slide-in-from-top-2">
+        
+        <button type="button" (click)="removePlace(i)" 
+            class="absolute -top-2 -right-2 bg-red-100 text-red-600 hover:bg-red-200 p-1.5 rounded-full shadow-sm transition-transform hover:scale-110">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
 
-<input formControlName="bestSeason"
-placeholder="Best Season"
-class="w-full border p-2 rounded">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex flex-col">
+            <label class="text-xs font-bold text-gray-500 uppercase mb-1">Place Name</label>
+            <input formControlName="name" placeholder="e.g. Blue Lagoon" class="input-style bg-white">
+            </div>
 
-<input type="number"
-formControlName="averagePrice"
-placeholder="Average Price"
-class="w-full border p-2 rounded">
+            <div class="flex flex-col">
+            <label class="text-xs font-bold text-gray-500 uppercase mb-1">Image URL</label>
+            <input formControlName="image" placeholder="https://..." class="input-style bg-white">
+            </div>
 
-<!-- Images -->
-<div>
-<h3 class="font-semibold mb-2">Images</h3>
-<div formArrayName="images">
-<div *ngFor="let img of images.controls;let i=index">
-<input
-[formControlName]="i"
-class="w-full border p-2 rounded mb-2"
-placeholder="Image URL">
-</div>
-</div>
-<button type="button"
-(click)="addImage()"
-class="bg-gray-200 px-3 py-1 rounded">
-Add Image
-</button>
-</div>
+            <div class="flex flex-col md:col-span-2">
+            <label class="text-xs font-bold text-gray-500 uppercase mb-1">Short Description</label>
+            <textarea formControlName="description" rows="2" 
+                placeholder="What makes this place special?" 
+                class="input-style bg-white resize-none"></textarea>
+            </div>
+        </div>
+        </div>
 
-<!-- Attractions -->
-<div>
-<h3 class="font-semibold">Popular Attractions</h3>
-<div formArrayName="popularAttractions">
-<div *ngFor="let a of attractions.controls;let i=index">
-<input
-[formControlName]="i"
-class="w-full border p-2 rounded mb-2"
-placeholder="Attraction">
-</div>
-</div>
+        <div *ngIf="places.length === 0" class="text-center py-8 border-2 border-dashed border-gray-200 rounded-2xl">
+        <p class="text-gray-400 text-sm">No specific places added yet. Click "Add New Place" to start.</p>
+        </div>
+    </div>
+    </section>
 
-<button type="button"
-(click)="addAttraction()"
-class="bg-gray-200 px-3 py-1 rounded">
-Add Attraction
-</button>
-</div>
-
-<!-- Places -->
-<div>
-
-<h3 class="font-semibold">Places</h3>
-<div formArrayName="places">
-<div
-*ngFor="let p of places.controls;let i=index"
-[formGroupName]="i"
-class="border p-3 rounded mb-3">
-
-<input
-formControlName="name"
-placeholder="Place Name"
-class="w-full border p-2 rounded mb-2">
-
-<input
-formControlName="image"
-placeholder="Place Image"
-class="w-full border p-2 rounded mb-2">
-
-<textarea
-formControlName="description"
-placeholder="Place Description"
-class="w-full border p-2 rounded">
-</textarea>
-</div>
-</div>
-
-<button type="button"
-(click)="addPlace()"
-class="bg-gray-200 px-3 py-1 rounded">
-Add Place
-</button>
-
-</div>
-
-<button
-class="bg-blue-600 text-white px-4 py-2 rounded">
-Save
-</button>
-
-</form>
-
+      <div class="pt-4">
+        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg transition-all transform active:scale-[0.98]">
+          Create Destination
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

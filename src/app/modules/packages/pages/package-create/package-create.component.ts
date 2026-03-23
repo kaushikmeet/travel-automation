@@ -4,6 +4,7 @@ import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } fr
 import { PackageService } from '../../package.service';
 import { Router } from '@angular/router';
 import { DestinationService } from '../../../destinations/destination.service';
+import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-package-create',
@@ -23,7 +24,8 @@ export class PackageCreateComponent {
     private fb: FormBuilder,
     private packageService: PackageService,
     private router: Router,
-    private destiSRV: DestinationService
+    private destiSRV: DestinationService,
+    private toastr: ToastService
   ) {}
 
   ngOnInit() {
@@ -65,52 +67,40 @@ export class PackageCreateComponent {
   }
 
   // ✅ MULTIPLE FILES + PREVIEW
+  
   onFileChange(event: any) {
-    const files = event.target.files;
-
-    this.selectedFiles = [];
-    this.previewImages = [];
-
-    for (let file of files) {
-      this.selectedFiles.push(file);
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.previewImages.push(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+    if (event.target.files.length > 0) {
+      this.selectedFiles = Array.from(event.target.files);
     }
   }
 
-  // ✅ SUBMIT (IMPORTANT FIX)
   submit() {
+    if (this.packageform.invalid) return;
+
     const formData = new FormData();
+    const val = this.packageform.value;
 
-    // append normal fields
-    Object.keys(this.packageform.value).forEach(key => {
-      if (key !== 'itinerary') {
-        formData.append(key, this.packageform.value[key]);
-      }
-    });
+    // Append Simple Fields
+    formData.append('title', val.title);
+    formData.append('description', val.description);
+    formData.append('destination', val.destination);
+    formData.append('price', val.price);
+    formData.append('days', val.days);
+    formData.append('nights', val.nights);
+    formData.append('maxTravelers', val.maxTravelers);
 
-    // ✅ correct itinerary
-    formData.append(
-      "itinerary",
-      JSON.stringify(this.packageform.value.itinerary)
-     );
-    //  console.log(this.packageform.value.itinerary);
+    // Append Itinerary as a JSON String (Node will parse this)
+    formData.append('itinerary', JSON.stringify(val.itinerary));
 
-    // ✅ append images
+    // Append Images
     this.selectedFiles.forEach(file => {
-      formData.append("images", file);
+      formData.append('images', file, file.name);
     });
 
-    // ✅ SEND FORMDATA (FIXED)
-    this.packageService.create(formData).subscribe((res: any) => {
-      // console.log(res);
-      alert("Package created");
-      this.packageform.reset();
-      this.router.navigate(['/packages/package-list']);
+    this.packageService.create(formData).subscribe(() => {
+      this.toastr.success("Package Create Successfull");
+      this.router.navigate(['/packages']);
     });
   }
+
 }

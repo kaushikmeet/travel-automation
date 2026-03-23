@@ -18,9 +18,13 @@ export class DestinationDetailsComponent implements OnInit {
  ){}
 
  ngOnInit(): void {
-   const id = this.route.snapshot.paramMap.get("id");
-   this.service.getById(id!).subscribe(res=>{
-    this.destination=res;
+   this.route.paramMap.subscribe(params=>{
+    const slug = params.get('slug');
+    if(slug){
+      this.service.getBySlug(slug).subscribe(res =>{
+        this.destination = res;
+      })
+    }
    })
  }
 }

@@ -9,7 +9,7 @@ const routes: Routes = [
   {path:"destination-list", component: DestinationListComponent},
   {path:"create", component: CreateDestinationComponent},
   {path:"update/:id", component: UpdateDestinationComponent},
-  {path:"detail/:id", component: DestinationDetailsComponent}
+  {path:"detail/:slug", component: DestinationDetailsComponent}
 ];
 
 @NgModule({
