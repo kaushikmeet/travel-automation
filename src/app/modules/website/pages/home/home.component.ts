@@ -27,7 +27,7 @@ export class HomeComponent {
   ){}
   ngOnInit(){
     this.packageService.getRecommended().subscribe(data => this.recommendedPackages = data);
-    this.destService.getPopular().subscribe(data => this.destinations = data);
+    this.destService.getPopular().subscribe((res: any)=>{this.destinations = res.data;})
     this.itineraryService.getRecent().subscribe(data => this.recentItineraries = data);
   }
 }

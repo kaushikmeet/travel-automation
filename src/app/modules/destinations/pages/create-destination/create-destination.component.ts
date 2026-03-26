@@ -64,37 +64,32 @@ export class CreateDestinationComponent {
   }
 
   submit() {
-  if (this.destionationform.invalid) {
-    alert("Please fill in all required fields");
-    return;
-  }
-
   const formData = new FormData();
-  const val = this.destionationform.value;
 
-  // 1. Simple fields
-  formData.append('name', val.name);
-  formData.append('country', val.country);
-  formData.append('city', val.city);
-  formData.append('description', val.description);
-  formData.append('bestSeason', val.bestSeason);
-  formData.append('averagePrice', val.averagePrice);
+  // Append simple strings
+  formData.append('name', this.destionationform.value.name);
+  formData.append('country', this.destionationform.value.country);
+  formData.append('city', this.destionationform.value.city);
+  formData.append('description', this.destionationform.value.description);
+  formData.append('bestSeason', this.destionationform.value.bestSeason);
+  formData.append('averagePrice', this.destionationform.value.averagePrice);
 
-  // 2. Arrays (Stringify for FormData)
-  formData.append('popularAttractions', JSON.stringify(val.popularAttractions.filter((a: any) => a)));
-  formData.append('places', JSON.stringify(val.places));
+  // FIX: Convert arrays/objects to JSON strings for Multipart compatibility
+  formData.append('places', JSON.stringify(this.destionationform.value.places));
+  formData.append('popularAttractions', JSON.stringify(this.destionationform.value.popularAttractions));
 
-  // 3. Files (The Gallery)
-  this.selectedFiles.forEach(file => {
-    formData.append('images', file, file.name);
+  // Append images
+  this.selectedFiles.forEach((file) => {
+    formData.append('images', file);
   });
 
+  // Call your service
   this.destinationSRV.create(formData).subscribe({
-    next: () => {
-      alert("Destination Created Successfully!");
-      this.router.navigate(['/destinations/destination-list']);
+    next: (res) => {
+      console.log('Success!', res);
+      alert("create succefull!");
     },
-    error: (err) => console.error("Creation failed", err)
+    error: (err) => console.error('Error Details:', err)
   });
 }
 

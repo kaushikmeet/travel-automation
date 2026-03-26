@@ -1,70 +1,151 @@
-<div class="max-w-4xl mx-auto p-6 bg-white shadow rounded-xl space-y-4">
-
-  <h2 class="text-2xl font-bold">Update Package</h2>
-
-  <form [formGroup]="updatePackageform" (ngSubmit)="update()" class="space-y-4">
-
-    <input formControlName="title" placeholder="Title"
-      class="w-full p-3 border rounded"/>
-
-    <textarea formControlName="description"
-      class="w-full p-3 border rounded"></textarea>
-
-    <!-- Destination -->
-    <select formControlName="destination"
-      class="w-full p-3 border rounded">
-      <option value="">Select Destination</option>
-      <option *ngFor="let d of destinations" [value]="d._id">
-        {{ d.name }} - {{ d.city }}
-      </option>
-    </select>
-
-    <!-- Price / Days / Nights -->
-    <div class="grid grid-cols-3 gap-4">
-      <input formControlName="price" placeholder="Price"
-        class="p-3 border rounded"/>
-      <input formControlName="days" placeholder="Days"
-        class="p-3 border rounded"/>
-      <input formControlName="nights" placeholder="Nights"
-        class="p-3 border rounded"/>
-    </div>
-
-    <input formControlName="maxTravelers" placeholder="Max Travelers"
-      class="w-full p-3 border rounded"/>
-
-    <!-- Images -->
-    <input type="file" multiple (change)="onFileChange($event)"
-      class="w-full p-3 border rounded"/>
-
-    <!-- Itinerary -->
-    <div formArrayName="itinerary" class="space-y-3">
-      <div *ngFor="let day of itinerary.controls; let i=index"
-           [formGroupName]="i"
-           class="p-4 border rounded bg-gray-50">
-
-        <h3 class="font-bold">Day {{ i + 1 }}</h3>
-
-        <input formControlName="title" placeholder="Title"
-          class="w-full p-2 border rounded mt-2"/>
-
-        <textarea formControlName="description"
-          class="w-full p-2 border rounded mt-2"></textarea>
-
-        <button type="button" (click)="removeDay(i)"
-          class="text-red-500 mt-2">Remove</button>
-
+<div class="min-h-screen bg-slate-50 py-12 px-4 md:px-8">
+  <div class="max-w-5xl mx-auto">
+    
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+      <div>
+        <button routerLink="/packages/package-list" class="flex items-center text-slate-400 hover:text-indigo-600 transition-colors mb-2 group text-[10px] font-black uppercase tracking-[0.2em]">
+          <i class="fa-solid fa-chevron-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+          Back to Inventory
+        </button>
+        <h1 class="text-3xl font-black text-slate-900 tracking-tight">Update Package Studio</h1>
+      </div>
+      
+      <div class="flex items-center gap-3">
+        <span class="px-4 py-2 bg-white border border-slate-200 rounded-xl text-[10px] font-black text-slate-400 uppercase tracking-widest">
+          Draft Auto-Saved
+        </span>
       </div>
     </div>
 
-    <button type="button" (click)="addDay()"
-      class="bg-green-500 text-white px-4 py-2 rounded">
-      + Add Day
-    </button>
+    <form [formGroup]="updatePackageform" (ngSubmit)="update()" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <div class="lg:col-span-2 space-y-6">
+        <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 md:p-10 space-y-6">
+          
+          <h2 class="text-sm font-black text-indigo-600 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-circle-info"></i> Basic Information
+          </h2>
 
-    <button type="submit"
-      class="bg-blue-600 text-white px-6 py-2 rounded">
-      Update
-    </button>
+          <div class="space-y-4">
+            <div class="space-y-2">
+              <label class="form-label">Package Title</label>
+              <input formControlName="title" placeholder="e.g. 7 Days Luxury Maldives Getaway" class="form-input" />
+            </div>
 
-  </form>
+            <div class="space-y-2">
+              <label class="form-label">Full Description</label>
+              <textarea formControlName="description" rows="5" class="form-input custom-scroll" placeholder="Describe the journey..."></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="space-y-2">
+                <label class="form-label">Primary Destination</label>
+                <div class="relative">
+                  <select formControlName="destination" class="form-input appearance-none bg-transparent">
+                    <option value="">Choose Destination</option>
+                    <option *ngFor="let d of destinations" [value]="d._id">
+                      {{ d.name }} ({{ d.city }})
+                    </option>
+                  </select>
+                  <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 text-[10px] pointer-events-none"></i>
+                </div>
+              </div>
+              
+              <div class="space-y-2">
+                <label class="form-label">Media Assets (Images)</label>
+                <label class="flex items-center justify-center w-full px-4 py-3 border-2 border-dashed border-slate-200 rounded-2xl cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/30 transition-all">
+                  <span class="text-xs font-bold text-slate-500"><i class="fa-solid fa-cloud-arrow-up mr-2"></i> Upload Photos</span>
+                  <input type="file" multiple (change)="onFileChange($event)" class="hidden"/>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 md:p-10">
+          <div class="flex items-center justify-between mb-8">
+            <h2 class="text-sm font-black text-indigo-600 uppercase tracking-[0.2em] flex items-center gap-2">
+              <i class="fa-solid fa-route"></i> Daily Itinerary
+            </h2>
+            <button type="button" (click)="addDay()" 
+              class="text-[10px] font-black uppercase tracking-widest text-indigo-600 hover:bg-indigo-50 px-4 py-2 rounded-xl border border-indigo-100 transition-all">
+              + Add Day
+            </button>
+          </div>
+
+          <div formArrayName="itinerary" class="space-y-4">
+            <div *ngFor="let day of itinerary.controls; let i=index" [formGroupName]="i" 
+                 class="group p-6 border border-slate-100 rounded-3xl bg-slate-50/50 hover:bg-white hover:shadow-lg hover:shadow-indigo-100/20 transition-all relative overflow-hidden">
+              
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                  <span class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] font-black">
+                    {{ i + 1 }}
+                  </span>
+                  <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest">Plan for Day {{ i + 1 }}</h3>
+                </div>
+                <button type="button" (click)="removeDay(i)" class="text-slate-300 hover:text-rose-500 transition-colors">
+                  <i class="fa-solid fa-trash-can text-sm"></i>
+                </button>
+              </div>
+
+              <div class="space-y-3">
+                <input formControlName="title" placeholder="Day Title (e.g. Arrival and Sunset Dinner)" class="form-input !bg-white" />
+                <textarea formControlName="description" rows="2" class="form-input !bg-white custom-scroll" placeholder="What happens on this day?"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-slate-900 rounded-[2.5rem] p-8 text-white shadow-xl shadow-slate-200">
+          <h2 class="text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em] mb-6">Price & Duration</h2>
+          
+          <div class="space-y-6">
+            <div class="space-y-2">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Base Price (INR)</label>
+              <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold">₹</span>
+                <input formControlName="price" class="sidebar-input" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div class="space-y-2">
+                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Days</label>
+                <input formControlName="days" class="sidebar-input text-center" />
+              </div>
+              <div class="space-y-2">
+                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Nights</label>
+                <input formControlName="nights" class="sidebar-input text-center" />
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Max Travelers</label>
+              <input formControlName="maxTravelers" class="sidebar-input" />
+            </div>
+          </div>
+
+          <div class="mt-10 pt-6 border-t border-slate-800 space-y-4">
+            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black py-4 rounded-2xl shadow-lg transition-all transform active:scale-95 uppercase tracking-widest text-xs">
+              Commit Changes
+            </button>
+            <button type="button" routerLink="/packages" class="w-full py-4 text-slate-400 font-bold hover:text-white transition-colors uppercase tracking-widest text-[10px]">
+              Discard Updates
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-[2.5rem] p-8 border border-slate-100">
+          <h3 class="text-xs font-black text-slate-900 uppercase tracking-widest mb-4">Tips</h3>
+          <ul class="text-[11px] text-slate-500 space-y-3 leading-relaxed">
+            <li class="flex gap-2"><i class="fa-solid fa-lightbulb text-amber-400 mt-0.5"></i> Add high-quality 16:9 images for better conversion.</li>
+            <li class="flex gap-2"><i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i> Ensure Day/Night count matches your itinerary length.</li>
+          </ul>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>

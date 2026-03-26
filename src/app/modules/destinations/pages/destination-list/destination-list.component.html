@@ -1,53 +1,136 @@
-<div class="p-6">
+<div class="min-h-screen bg-slate-50 p-4 md:p-8">
+  <div class="max-w-7xl mx-auto">
+    
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+      <div class="space-y-1">
+        <h1 class="text-4xl font-black text-slate-900 tracking-tight">Destinations</h1>
+        <p class="text-slate-500 font-medium flex items-center gap-2">
+          <i class="fa-solid fa-earth-asia text-indigo-500"></i>
+          Inventory of {{ destinations.length }} global locations
+        </p>
+      </div>
 
-<div class="flex justify-between mb-6">
-<h1 class="text-2xl font-bold">Destinations</h1>
+      <a routerLink="/destinations/create" 
+        class="flex items-center justify-center gap-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-8 py-4 rounded-2xl shadow-xl shadow-indigo-100 transition-all transform hover:-translate-y-1 active:scale-95">
+        <i class="fa-solid fa-plus-circle text-lg"></i>
+        Add Destination
+      </a>
+    </div>
 
-<a routerLink="/destinations/create"
-class="bg-blue-600 text-white px-4 py-2 rounded">
-Create Destination
-</a>
-</div>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div class="md:col-span-2 relative">
+        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <input 
+          type="text" 
+          placeholder="Search destinations by name, city, or country..." 
+          class="w-full pl-12 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all shadow-sm"
+        />
+      </div>
 
-<div class="grid md:grid-cols-3 gap-6">
+      <div class="relative">
+        <select class="w-full pl-4 pr-10 py-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none appearance-none cursor-pointer shadow-sm text-slate-600 font-medium">
+          <option value="">All Countries</option>
+          </select>
+        <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
+      </div>
 
-<div *ngFor="let d of destinations"
-class="bg-white shadow rounded overflow-hidden">
+      <div class="relative">
+        <select class="w-full pl-4 pr-10 py-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none appearance-none cursor-pointer shadow-sm text-slate-600 font-medium">
+          <option value="name-asc">Name (A-Z)</option>
+          <option value="name-desc">Name (Z-A)</option>
+          <option value="recent">Recently Added</option>
+        </select>
+        <i class="fa-solid fa-arrow-down-wide-short absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
+      </div>
+    </div>
 
-<img
-[src]="d.images?.[0]"
-class="h-48 w-full object-cover">
+    <div class="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-50/80 border-b border-slate-100">
+              <th class="p-6 text-[11px] font-black uppercase tracking-[0.15em] text-slate-400">Destination</th>
+              <th class="p-6 text-[11px] font-black uppercase tracking-[0.15em] text-slate-400">Location</th>
+              <th class="p-6 text-[11px] font-black uppercase tracking-[0.15em] text-slate-400">Status</th>
+              <th class="p-6 text-[11px] font-black uppercase tracking-[0.15em] text-slate-400 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-50">
+            
+            <tr *ngFor="let d of destinations" class="hover:bg-indigo-50/20 transition-all group">
+              
+              <td class="p-6">
+                <div class="flex items-center gap-4">
+                  <div class="w-16 h-12 rounded-xl overflow-hidden shadow-md border border-white group-hover:scale-110 transition-transform duration-300">
+                    <img [src]="imageUrl + d.images?.[0]" class="w-full h-full object-cover">
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="font-bold text-slate-800 tracking-tight group-hover:text-indigo-600 transition-colors">{{ d.name }}</span>
+                    <span class="text-[10px] font-mono text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded w-fit mt-1">ID_{{ d._id.slice(-6) }}</span>
+                  </div>
+                </div>
+              </td>
 
-<div class="p-4">
+              <td class="p-6 text-sm text-slate-600">
+                <div class="flex flex-col">
+                  <span class="font-bold text-slate-700">{{ d.city }}</span>
+                  <span class="text-slate-400 flex items-center gap-1">
+                    <i class="fa-solid fa-globe text-[10px]"></i> {{ d.country }}
+                  </span>
+                </div>
+              </td>
 
-<h2 class="text-lg font-bold">
-{{d.name}}
-</h2>
+              <td class="p-6">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-emerald-50 text-emerald-600 border border-emerald-100">
+                  <span class="w-1 h-1 rounded-full bg-emerald-600"></span>
+                  Published
+                </span>
+              </td>
 
-<p class="text-gray-500">
-{{d.city}}, {{d.country}}
-</p>
+              <td class="p-6">
+                <div class="flex justify-end gap-3">
+                  <a [routerLink]="['/destinations/update', d._id]" 
+                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 hover:bg-indigo-600 hover:text-white transition-all shadow-sm border border-slate-100">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </a>
+                  
+                  <button (click)="delete(d._id)" 
+                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 hover:bg-rose-500 hover:text-white transition-all shadow-sm border border-slate-100">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                </div>
+              </td>
 
-<div class="flex gap-3 mt-3 text-sm">
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-<a
-routerLink="/destinations/update/{{d._id}}"
-class="text-yellow-600">
-Edit
-</a>
+      <div *ngIf="destinations?.length === 0" class="p-20 text-center flex flex-col items-center">
+        <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4 text-slate-200">
+          <i class="fa-solid fa-map-location-dot text-3xl"></i>
+        </div>
+        <h3 class="text-lg font-bold text-slate-800">No destinations found</h3>
+        <p class="text-slate-500 max-w-xs mx-auto">Try broadening your search or add a new travel hotspot.</p>
+      </div>
 
-<button
-(click)="delete(d._id)"
-class="text-red-600">
-Delete
-</button>
+      <div class="p-6 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Show</span>
+          <select class="bg-white border border-slate-200 rounded-lg text-xs px-2 py-1 outline-none">
+            <option>10</option>
+            <option>25</option>
+            <option>50</option>
+          </select>
+        </div>
 
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+        <div class="flex items-center gap-2">
+          <button class="pagination-btn" disabled><i class="fa-solid fa-chevron-left"></i></button>
+          <button class="pagination-btn active">1</button>
+          <button class="pagination-btn">2</button>
+          <button class="pagination-btn"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

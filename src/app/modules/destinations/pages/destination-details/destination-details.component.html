@@ -1,7 +1,7 @@
 <div class="w-full mx-auto bg-white selection:bg-indigo-100">
   
   <div class="relative group overflow-hidden shadow-2xl">
-    <img [src]="destination?.images?.[0]" 
+    <img [src]="imageUrl + destination?.images?.[0]" 
          class="w-full h-[450px] object-cover transition-transform duration-700 group-hover:scale-105"
          alt="Destination Header">
     <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>

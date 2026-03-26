@@ -1,39 +1,94 @@
-<div class="max-w-lg mx-auto mt-10 bg-white shadow-lg rounded-lg p-6">
+<div class="min-h-screen bg-slate-50 py-12 px-4">
+  <div class="max-w-xl mx-auto">
+    
+    <button routerLink="/users" class="flex items-center text-slate-400 hover:text-indigo-600 mb-6 transition-all group">
+      <i class="fa-solid fa-chevron-left mr-2 text-xs group-hover:-translate-x-1 transition-transform"></i>
+      <span class="text-sm font-bold uppercase tracking-widest">Back to Directory</span>
+    </button>
 
-<h2 class="text-2xl font-bold mb-6">
-Update User
-</h2>
+    <div class="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/60 border border-slate-100 overflow-hidden">
+      
+      <div class="bg-slate-900 p-10 text-white relative overflow-hidden">
+        <div class="relative z-10 flex items-center gap-6">
+          <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-3xl font-black shadow-2xl border-4 border-slate-800">
+            {{ editForm.get('name')?.value?.[0]?.toUpperCase() || '?' }}
+          </div>
+          <div>
+            <h2 class="text-2xl font-black tracking-tight leading-tight">
+              {{ editForm.get('name')?.value || 'Update Account' }}
+            </h2>
+            <p class="text-indigo-400 text-xs font-bold uppercase tracking-[0.2em] mt-1">
+              {{ editForm.get('role')?.value }} Account
+            </p>
+          </div>
+        </div>
+        <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl"></div>
+      </div>
 
-<form [formGroup]="editForm" (ngSubmit)="update()" class="space-y-4">
+      <form [formGroup]="editForm" (ngSubmit)="update()" class="p-10 space-y-8">
+        
+        <div class="grid grid-cols-1 gap-6">
+          
+          <div class="space-y-2">
+            <label class="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Legal Full Name</label>
+            <div class="relative group">
+              <i class="fa-solid fa-id-card absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-500 transition-colors"></i>
+              <input
+                type="text"
+                formControlName="name"
+                placeholder="Full Name"
+                class="update-input"
+              >
+            </div>
+          </div>
 
-<input
-type="text"
-formControlName="name"
-placeholder="Name"
-class="w-full border p-2 rounded-lg">
+          <div class="space-y-2">
+            <label class="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Primary Email</label>
+            <div class="relative group">
+              <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-500 transition-colors"></i>
+              <input
+                type="email"
+                formControlName="email"
+                placeholder="email@example.com"
+                class="update-input"
+              >
+            </div>
+          </div>
 
-<input
-type="email"
-formControlName="email"
-placeholder="Email"
-class="w-full border p-2 rounded-lg">
+          <div class="space-y-2">
+            <label class="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">System Permissions</label>
+            <div class="relative group">
+              <i class="fa-solid fa-user-shield absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-500 transition-colors z-10"></i>
+              <select
+                formControlName="role"
+                class="update-input appearance-none bg-transparent relative z-0"
+              >
+                <option value="user">Standard Traveler</option>
+                <option value="admin">Platform Administrator</option>
+              </select>
+              <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 text-[10px] pointer-events-none"></i>
+            </div>
+          </div>
 
-<select
-formControlName="role"
-class="w-full border p-2 rounded-lg">
+        </div>
 
-<option value="user">User</option>
-<option value="admin">Admin</option>
-
-</select>
-
-<button
-class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
-
-Update User
-
-</button>
-
-</form>
-
+        <div class="pt-6 border-t border-slate-50">
+          <button
+            type="submit"
+            [disabled]="editForm.invalid"
+            class="w-full bg-slate-900 hover:bg-indigo-600 text-white font-black py-4 rounded-2xl shadow-xl shadow-slate-200 transition-all transform active:scale-[0.98] disabled:opacity-30 flex items-center justify-center gap-3 uppercase tracking-widest text-xs"
+          >
+            <i class="fa-solid fa-rotate text-sm"></i>
+            Commit Account Changes
+          </button>
+        </div>
+      </form>
+    </div>
+    
+    <div class="mt-8 text-center">
+      <p class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.3em]">
+        Security Protocol Active &bull; Ver: 2.0.4
+      </p>
+    </div>
+  </div>
 </div>

@@ -1,74 +1,92 @@
-<div class="max-w-lg mx-auto mt-10 bg-white shadow-lg rounded-lg p-6">
+<div class="min-h-screen bg-slate-50 py-12 px-4">
+  <div class="max-w-xl mx-auto">
+    
+    <button routerLink="" class="flex items-center text-slate-500 hover:text-indigo-600 mb-6 transition-colors group">
+      <i class="fa-solid fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+      <span class="text-sm font-medium">Back to User List</span>
+    </button>
 
-<h2 class="text-2xl font-bold mb-6">
-Create User
-</h2>
+    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+      
+      <div class="bg-indigo-600 p-8 text-white relative overflow-hidden">
+        <div class="relative z-10">
+          <h2 class="text-2xl font-extrabold tracking-tight">Create New User</h2>
+          <p class="text-indigo-100 text-sm mt-1">Assign roles and set up access for new team members.</p>
+        </div>
+        <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+      </div>
 
-<form [formGroup]="userForm" (ngSubmit)="submit()" class="space-y-4">
+      <form [formGroup]="userForm" (ngSubmit)="submit()" class="p-8 space-y-6">
+        
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Full Name</label>
+          <div class="relative">
+            <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input
+              type="text"
+              formControlName="name"
+              placeholder="John Doe"
+              class="input-field"
+            >
+          </div>
+        </div>
 
-<!-- Name -->
-<div>
-<label class="block text-sm font-medium text-gray-700">
-Name
-</label>
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Email Address</label>
+          <div class="relative">
+            <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="john@example.com"
+              class="input-field"
+            >
+          </div>
+        </div>
 
-<input
-type="text"
-formControlName="name"
-placeholder="Enter name"
-class="w-full mt-1 border rounded-lg p-2 focus:ring focus:ring-blue-300">
-</div>
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Secure Password</label>
+          <div class="relative">
+            <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input
+              type="password"
+              formControlName="password"
+              placeholder="••••••••"
+              class="input-field"
+            >
+          </div>
+        </div>
 
-<!-- Email -->
-<div>
-<label class="block text-sm font-medium text-gray-700">
-Email
-</label>
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Access Permissions</label>
+          <div class="relative">
+            <i class="fa-solid fa-shield-halved absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 z-10"></i>
+            <select
+              formControlName="role"
+              class="input-field appearance-none bg-white relative z-0"
+            >
+              <option value="user">Standard User (Traveler)</option>
+              <option value="admin">Administrator (Full Access)</option>
+            </select>
+            <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+          </div>
+        </div>
 
-<input
-type="email"
-formControlName="email"
-placeholder="Enter email"
-class="w-full mt-1 border rounded-lg p-2 focus:ring focus:ring-blue-300">
-</div>
-
-<!-- Password -->
-<div>
-<label class="block text-sm font-medium text-gray-700">
-Password
-</label>
-
-<input
-type="password"
-formControlName="password"
-placeholder="Enter password"
-class="w-full mt-1 border rounded-lg p-2 focus:ring focus:ring-blue-300">
-</div>
-
-<!-- Role -->
-<div>
-<label class="block text-sm font-medium text-gray-700">
-Role
-</label>
-
-<select
-formControlName="role"
-class="w-full mt-1 border rounded-lg p-2">
-
-<option value="user">User</option>
-<option value="admin">Admin</option>
-
-</select>
-</div>
-
-<button
-type="submit"
-class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-
-Save User
-
-</button>
-
-</form>
-
+        <div class="pt-4">
+          <button
+            type="submit"
+            [disabled]="userForm.invalid"
+            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-indigo-100 transition-all transform active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            <i class="fa-solid fa-user-check"></i>
+            Save and Initialize User
+          </button>
+        </div>
+      </form>
+    </div>
+    
+    <p class="text-center text-slate-400 text-xs mt-6">
+      System will automatically send a welcome invitation to the provided email.
+    </p>
+  </div>
 </div>

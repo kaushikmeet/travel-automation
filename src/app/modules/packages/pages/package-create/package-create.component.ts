@@ -19,6 +19,12 @@ export class PackageCreateComponent {
   destinations: any[] = [];
   selectedFiles: File[] = [];
   previewImages: string[] = [];
+  categories = ["Honeymoon", "Adventure", "Luxury", "Family", "Budget", "Solo"];
+  
+  availableTags = [
+    "Romance", "Beach", "Cultural", "Wildlife", "Wellness", "Cruise",
+    "Trekking", "Safari", "Skiing", "Diving", "Road Trip", "City Break"
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -37,13 +43,15 @@ export class PackageCreateComponent {
       nights: ["", Validators.required],
       description: [""],
       maxTravelers: [""],
+      category: ['', Validators.required],
+      tags: [[]],
       itinerary: this.fb.array([])
     });
 
     this.addDay();
 
-    this.destiSRV.getAll().subscribe(res => {
-      this.destinations = res;
+    this.destiSRV.getAll().subscribe((res: any) => {
+      this.destinations = res.data;
     });
   }
 
@@ -75,32 +83,56 @@ export class PackageCreateComponent {
   }
 
   submit() {
-    if (this.packageform.invalid) return;
-
-    const formData = new FormData();
-    const val = this.packageform.value;
-
-    // Append Simple Fields
-    formData.append('title', val.title);
-    formData.append('description', val.description);
-    formData.append('destination', val.destination);
-    formData.append('price', val.price);
-    formData.append('days', val.days);
-    formData.append('nights', val.nights);
-    formData.append('maxTravelers', val.maxTravelers);
-
-    // Append Itinerary as a JSON String (Node will parse this)
-    formData.append('itinerary', JSON.stringify(val.itinerary));
-
-    // Append Images
-    this.selectedFiles.forEach(file => {
-      formData.append('images', file, file.name);
-    });
-
-    this.packageService.create(formData).subscribe(() => {
-      this.toastr.success("Package Create Successfull");
-      this.router.navigate(['/packages']);
-    });
+  if (this.packageform.invalid) {
+    this.toastr.error("Please fill all required fields");
+    return;
   }
 
+  const formData = new FormData();
+  const val = this.packageform.value;
+
+  // Append Simple Fields
+  formData.append('title', val.title);
+  formData.append('description', val.description || '');
+  formData.append('destination', val.destination);
+  formData.append('price', val.price.toString());
+  formData.append('days', val.days.toString());
+  formData.append('nights', val.nights.toString());
+  formData.append('maxTravelers', val.maxTravelers || '10');
+  formData.append('category', val.category);
+  formData.append('tags', val.tags); 
+  formData.append('itinerary', JSON.stringify(val.itinerary));
+
+  // Append Images
+  this.selectedFiles.forEach(file => {
+    formData.append('images', file, file.name);
+  });
+
+  this.packageService.create(formData).subscribe({
+    next: () => {
+      this.toastr.success("Package Created Successfully");
+      this.router.navigate(['/packages/package-list']);
+    },
+    error: (err) => {
+      console.error(err);
+      this.toastr.error("Failed to create package");
+    }
+  });
+}
+
+  // create-package.component.ts
+
+onTagToggle(tag: string) {
+  const currentTags = [...(this.packageform.get('tags')?.value || [])];
+
+  const index = currentTags.indexOf(tag);
+
+  if (index > -1) {
+    currentTags.splice(index, 1);
+  } else {
+    currentTags.push(tag);
+  }
+
+  this.packageform.get('tags')?.setValue(currentTags);
+}
 }

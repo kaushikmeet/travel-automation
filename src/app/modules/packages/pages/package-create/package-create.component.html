@@ -69,7 +69,34 @@
           </div>
         </div>
       </section>
+      <section>
+        <h2 class="text-lg font-semibold text-gray-800 border-b pb-2 mb-4">Categorization</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <div class="flex flex-col">
+            <label class="text-sm font-medium text-gray-600 mb-1">Primary Category</label>
+            <select formControlName="category" class="input-style bg-white appearance-none">
+              <option value="">Select Category...</option>
+              <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+            </select>
+            <p class="text-[10px] text-gray-400 mt-1 italic">* This determines the main search filter</p>
+          </div>
 
+          <div class="flex flex-col">
+            <label class="text-sm font-medium text-gray-600 mb-2">Package Tags (Experience-based)</label>
+            <div class="flex flex-wrap gap-2">
+              <button type="button" 
+                *ngFor="let tag of availableTags"
+                (click)="onTagToggle(tag)"
+                [ngClass]="packageform.get('tags')?.value.includes(tag) ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-600'"
+                class="px-3 py-1 rounded-full text-xs font-bold transition-all">
+                {{ tag }}
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
       <section>
         <div class="flex justify-between items-center mb-6 border-b pb-2">
           <h2 class="text-lg font-semibold text-gray-800">Day-by-Day Itinerary</h2>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DestinationService } from '../../destination.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-destination-list',
@@ -12,6 +13,8 @@ import { RouterLink } from '@angular/router';
 export class DestinationListComponent {
   destinations: any[] = [];
 
+  readonly imageUrl = environment.imagesUrl + '/uploads/';
+
   constructor(private destinationSRV: DestinationService){}
 
   ngOnInit(){
@@ -19,8 +22,8 @@ export class DestinationListComponent {
   }
 
   load(){
-    this.destinationSRV.getAll().subscribe(res=>{
-      this.destinations = res;
+    this.destinationSRV.getAll().subscribe((res:any)=>{
+      this.destinations = res.data;
     })
   }
 

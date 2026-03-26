@@ -1,90 +1,104 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-
-  <form
-    *ngIf="form"
-    [formGroup]="form"
-    (ngSubmit)="update()"
-    class="w-full max-w-2xl bg-white shadow-lg rounded-2xl p-8 space-y-6">
-
-    <!-- Title -->
-    <h2 class="text-2xl font-bold text-gray-800 text-center">
-      Update Destination
-    </h2>
-
-    <!-- Name -->
-    <div>
-      <label class="block text-sm font-medium text-gray-600">Name</label>
-      <input
-        type="text"
-        formControlName="name"
-        class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"/>
-    </div>
-
-    <!-- Country + City -->
-    <div class="grid grid-cols-2 gap-4">
+<div class="min-h-screen bg-slate-50 py-12 px-4 md:px-8">
+  <div class="max-w-3xl mx-auto">
+    
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
       <div>
-        <label class="block text-sm text-gray-600">Country</label>
-        <input
-          type="text"
-          formControlName="country"
-          class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"/>
+        <button (click)="goDestionationList()" class="flex items-center text-slate-400 hover:text-indigo-600 transition-colors mb-2 group">
+          <i class="fa-solid fa-arrow-left-long mr-2 group-hover:-translate-x-1 transition-transform"></i>
+          <span class="text-xs font-black uppercase tracking-[0.2em]">Return to Inventory</span>
+        </button>
+        <h1 class="text-3xl font-black text-slate-900 tracking-tight">Modify Destination</h1>
       </div>
-
-      <div>
-        <label class="block text-sm text-gray-600">City</label>
-        <input
-          type="text"
-          formControlName="city"
-          class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"/>
+      
+      <div class="hidden md:flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-100 rounded-2xl">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span class="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Editing Mode</span>
       </div>
     </div>
 
-    <!-- Description -->
-    <div>
-      <label class="block text-sm text-gray-600">Description</label>
-      <textarea
-        formControlName="description"
-        rows="3"
-        class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
-    </div>
-
-    <!-- Season + Price -->
-    <div class="grid grid-cols-2 gap-4">
-      <div>
-        <label class="block text-sm text-gray-600">Best Season</label>
-        <input
-          type="text"
-          formControlName="bestSeason"
-          class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"/>
+    <form *ngIf="form" [formGroup]="form" (ngSubmit)="update()" 
+      class="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+      
+      <div class="h-32 bg-gradient-to-r from-indigo-600 to-violet-700 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div class="absolute inset-0 flex items-center px-10">
+          <div class="p-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">
+            <i class="fa-solid fa-map-location-dot text-3xl text-white"></i>
+          </div>
+        </div>
       </div>
 
-      <div>
-        <label class="block text-sm text-gray-600">Average Price</label>
-        <input
-          type="text"
-          formControlName="averagePrice"
-          class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"/>
+      <div class="p-8 md:p-10 space-y-8">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="md:col-span-2 space-y-2">
+            <label class="form-label">Destination Name</label>
+            <div class="relative group">
+              <i class="fa-solid fa-passport absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-500 transition-colors"></i>
+              <input type="text" formControlName="name" class="form-input" placeholder="e.g. Santorini Luxury Escapes">
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="form-label">Country</label>
+            <div class="relative group">
+              <i class="fa-solid fa-globe absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-500 transition-colors"></i>
+              <input type="text" formControlName="country" class="form-input" placeholder="e.g. Greece">
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="form-label">City</label>
+            <div class="relative group">
+              <i class="fa-solid fa-city absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-500 transition-colors"></i>
+              <input type="text" formControlName="city" class="form-input" placeholder="e.g. Oia">
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="form-label">Experience Description</label>
+          <div class="relative">
+             <textarea formControlName="description" rows="4" class="form-input !py-4 custom-scroll" placeholder="Describe the atmosphere, culture, and beauty..."></textarea>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="form-label">Peak Season</label>
+            <div class="relative group">
+              <i class="fa-solid fa-cloud-sun absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-500 transition-colors"></i>
+              <input type="text" formControlName="bestSeason" class="form-input" placeholder="e.g. June - September">
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="form-label">Average Price (Per Night)</label>
+            <div class="relative group">
+              <i class="fa-solid fa-circle-dollar-to-slot absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-500 transition-colors"></i>
+              <input type="text" formControlName="averagePrice" class="form-input" placeholder="e.g. ₹15,000">
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col-reverse md:flex-row gap-4 pt-6 border-t border-slate-50">
+          <button type="button" (click)="goDestionationList()"
+            class="flex-1 py-4 px-6 rounded-2xl text-slate-400 font-bold hover:bg-slate-50 transition-all uppercase tracking-widest text-xs">
+            Cancel Changes
+          </button>
+
+          <button type="submit" [disabled]="form.invalid"
+            class="flex-[2] py-4 px-6 bg-slate-900 hover:bg-indigo-600 text-white font-black rounded-2xl shadow-xl shadow-slate-200 transition-all transform active:scale-[0.98] disabled:opacity-30 flex items-center justify-center gap-3 uppercase tracking-[0.2em] text-xs">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            Update Destination
+          </button>
+        </div>
+
       </div>
-    </div>
-
-    <!-- Buttons -->
-    <div class="flex justify-between items-center pt-4">
-
-      <button
-        type="button"
-        (click)="goDestionationList()"
-        class="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500">
-        Cancel
-      </button>
-
-      <button
-        type="submit"
-        class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-        Update
-      </button>
-
-    </div>
-
-  </form>
-
+    </form>
+    
+    <p class="text-center text-slate-400 text-[10px] mt-8 font-bold uppercase tracking-[0.3em]">
+      Secured Database Entry &bull; CloudSync Active
+    </p>
+  </div>
 </div>

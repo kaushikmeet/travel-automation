@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -15,7 +15,7 @@ export class DestinationService {
   constructor(private http: HttpClient) { }
 
   getAll(){
-    return this.http.get<any[]>(`${this.api}`);
+    return this.http.get<any[]>(`${this.api}/all`);
   }
   
   getById(id:string){
@@ -45,7 +45,26 @@ export class DestinationService {
     return this.http.get<any[]>(`${this.api}/popular?limit=${limit}`);
   }
 
-  getBySlug(idOrSlug: string) {
-    return this.http.get<any>(`${this.api}/${idOrSlug}`);
+  getBySlug(slug: string): Observable<any> {
+      return this.http.get<any>(`${this.api}/detail/${slug}`);
+    }
+
+   getAllFiltered(filter: any, currentPage: number): Observable<any> {
+    let params = new HttpParams().set('page', currentPage.toString());
+
+    if (filter.search && filter.search.length > 0) {
+      params = params.set('search', filter.search);
+    }
+    if (filter.maxPrice) {
+      params = params.set('maxPrice', filter.maxPrice.toString());
+    }
+    if (filter.season) {
+      params = params.set('season', filter.season);
+    }
+    if (filter.sort) {
+      params = params.set('sort', filter.sort);
+    }
+
+    return this.http.get<any>(this.api, { params });
   }
 }
